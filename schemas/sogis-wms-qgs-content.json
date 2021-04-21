@@ -1,0 +1,458 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json",
+  "title": "SOGIS json2qgs data",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "title": "JSON Schema",
+      "description": "Reference to JSON schema of this document",
+      "type": "string",
+      "format": "uri",
+      "default": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json"
+    },
+    "wms_root_layer": {
+      "title": "WMS root layer name",
+      "type": "string"
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {"$ref": "#/definitions/productset"},
+          {"$ref": "#/definitions/vector_layer"},
+          {"$ref": "#/definitions/raster_layer"},
+          {"$ref": "#/definitions/wms_layer"},
+          {"$ref": "#/definitions/wmts_layer"}
+        ]
+      }
+    }
+   },
+    "composers": {
+      "title": "Print Templates",
+      "type": "array",
+      "items": {
+        "title": "Print Composer template",
+        "type": "object",
+        "properties": {
+          "composer_base64": {
+            "description": "Print Composer template in Base64 encoding",
+            "type": "string",
+            "contentEncoding": "base64"
+          }
+        },
+        "required": [
+          "composer_base64"
+        ]
+      }
+  },
+    "selection_color": {
+      "title": "Selection color as RGBA",
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "wms_metadata": {
+      "title": "Metadata for WMS GetCapabilities",
+      "type": "object",
+      "properties": {
+        "service_name": {
+          "type": "string"
+        },
+        "service_title": {
+          "type": "string"
+        },
+        "service_abstract": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "online_resource": {
+          "type": "string",
+          "format": "uri"
+        },
+        "contact_person": {
+          "type": "string"
+        },
+        "contact_organization": {
+          "type": "string"
+        },
+        "contact_position": {
+          "type": "string"
+        },
+        "contact_phone": {
+          "type": "string"
+        },
+        "contact_mail": {
+          "type": "string",
+          "format": "email"
+        },
+        "fees": {
+          "type": "string"
+        },
+        "access_constraints": {
+          "type": "string"
+        },
+        "root_name": {
+          "type": "string"
+        },
+        "root_title": {
+          "type": "string"
+        },
+        "crs_list": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bbox": {
+          "title": "Bounding box",
+          "type": "object",
+          "properties": {
+            "bounds": {
+              "description": "Extent as [minx, miny, maxx, maxy]",
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "crs": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "productset": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "WMS group layer name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Layer type",
+          "type": "string",
+          "const": "layergroup"
+        },
+        "title": {
+          "description": "Group title",
+          "type": "string"
+        },
+        "sublayers": {
+          "description": "List of sublayer identifiers",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "title",
+        "sublayers"
+      ]
+    },
+    "vector_layer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Layer name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Layer type",
+          "type": "string",
+          "const": "layer"
+        },
+        "title": {
+          "description": "Layer title",
+          "type": "string"
+        },
+        "datatype": {
+          "description": "Data type",
+          "type": "string",
+          "const": "vector"
+        },
+        "postgis_datasource": {
+          "type": "object",
+          "properties": {
+            "dbconnection": {
+              "type": "string"
+            },
+            "schema": {
+              "type": "string"
+            },
+            "table": {
+              "type": "string"
+            },
+            "unique_key": {
+              "type": "string"
+            },
+            "geometry_field": {
+              "type": "string"
+            },
+            "geometry_type": {
+              "type": "string",
+              "enum": [
+                "POINT",
+                "LINESTRING",
+                "POLYGON",
+                "MULTIPOINT",
+                "MULTILINESTRING",
+                "MULTIPOLYGON"
+              ]
+            },
+            "srid": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "dbconnection",
+            "schema",
+            "table",
+            "unique_key",
+            "geometry_field",
+            "geometry_type",
+            "srid"
+          ]
+        },
+        "filter": {
+          "title": "QGIS object filter",
+          "type": "string"
+        },
+        "qml_base64": {
+          "description": "Vector QML in Base64 encoding",
+          "type": "string",
+          "contentEncoding": "base64"
+        },
+        "qml_assets": {
+          "title": "QML assets",
+          "type": "array",
+          "items": {
+            "title": "QML assets",
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "base64": {
+                "description": "QML asset in Base64 encoding",
+                "type": "string",
+                "contentEncoding": "base64"
+              }
+            },
+            "required": [
+              "path",
+              "base64"
+            ]
+          }
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Attribute name",
+                "type": "string"
+              },
+              "alias": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "bbox": {"$ref": "#/definitions/bbox"},
+        "crs": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "title",
+        "datatype",
+        "postgis_datasource"
+      ]
+    },
+    "raster_layer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Layer name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Layer type",
+          "type": "string",
+          "const": "layer"
+        },
+        "title": {
+          "description": "Layer title",
+          "type": "string"
+        },
+        "datatype": {
+          "description": "Data type",
+          "type": "string",
+          "const": "raster"
+        },
+        "raster_datasource": {
+          "type": "object",
+          "properties": {
+            "datasource": {
+              "description": "Path to raster data",
+              "type": "string"
+            },
+            "srid": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "datasource",
+            "srid"
+          ]
+        },
+        "qml_base64": {
+          "description": "Raster QML in Base64 encoding",
+          "type": "string",
+          "contentEncoding": "base64"
+        },
+        "bbox": {"$ref": "#/definitions/bbox"},
+        "crs": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "title",
+        "datatype",
+        "raster_datasource"
+      ]
+    },
+    "wms_layer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Layer name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Layer type",
+          "type": "string",
+          "const": "layer"
+        },
+        "title": {
+          "description": "Layer title",
+          "type": "string"
+        },
+        "datatype": {
+          "description": "Data type",
+          "type": "string",
+          "const": "wms"
+        },
+        "wms_datasource": {
+          "type": "object",
+          "properties": {
+            "datasource": {
+              "description": "QGIS WMS datasource string",
+              "type": "string"
+            }
+          },
+          "required": [
+            "datasource"
+          ]
+        },
+        "bbox": {"$ref": "#/definitions/bbox"},
+        "crs": {
+          "type": "string"
+        },
+        "internal_print_layer": {
+          "description": "Mark as internal print layer if set",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "title",
+        "datatype",
+        "wms_datasource"
+      ]
+    },
+    "wmts_layer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Layer name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Layer type",
+          "type": "string",
+          "const": "layer"
+        },
+        "title": {
+          "description": "Layer title",
+          "type": "string"
+        },
+        "datatype": {
+          "description": "Data type",
+          "type": "string",
+          "const": "wmts"
+        },
+        "wmts_datasource": {
+          "type": "object",
+          "properties": {
+            "datasource": {
+              "description": "QGIS WMS datasource string",
+              "type": "string"
+            }
+          },
+          "required": [
+            "datasource"
+          ]
+        },
+        "bbox": {"$ref": "#/definitions/bbox"},
+        "crs": {
+          "type": "string"
+        },
+        "internal_print_layer": {
+          "description": "Mark as internal print layer if set",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "title",
+        "datatype",
+        "wmts_datasource"
+      ]
+    },
+    "bbox": {
+      "description": "Extent as [minx, miny, maxx, maxy]",
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 4,
+      "maxItems": 4
+    }
+  }
