@@ -131,8 +131,7 @@
           }
         }
       }
-    }
-  },
+    },
   "definitions": {
     "productset": {
       "type": "object",
@@ -456,3 +455,4 @@
       "maxItems": 4
     }
   }
+}
