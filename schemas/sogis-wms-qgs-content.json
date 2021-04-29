@@ -28,21 +28,39 @@
       }
     }
    },
-    "composers": {
+    "print_templates": {
       "title": "Print Templates",
       "type": "array",
       "items": {
         "title": "Print Composer template",
         "type": "object",
         "properties": {
-          "composer_base64": {
+          "template_base64": {
             "description": "Print Composer template in Base64 encoding",
             "type": "string",
             "contentEncoding": "base64"
+          },
+          "template_assets": {
+            "title": "Assets list used by the template",
+            "type": "array",
+            "items": {
+              "title": "QTP assets",
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "base64": {
+                  "description": "QTP asset in Base64 encoding",
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              }
+            }
           }
         },
         "required": [
-          "composer_base64"
+          "template_base64"
         ]
       }
   },
@@ -278,8 +296,8 @@
           }
         },
         "bbox": {"$ref": "#/definitions/bbox"},
-        "crs": {
-          "type": "string"
+        "srid": {
+          "type": "integer"
         }
       },
       "required": [
@@ -333,8 +351,8 @@
           "contentEncoding": "base64"
         },
         "bbox": {"$ref": "#/definitions/bbox"},
-        "crs": {
-          "type": "string"
+        "srid": {
+          "type": "integer"
         }
       },
       "required": [
@@ -369,18 +387,35 @@
         "wms_datasource": {
           "type": "object",
           "properties": {
-            "datasource": {
-              "description": "QGIS WMS datasource string",
+            "wms_url": {
               "type": "string"
+            },
+            "layers": {
+              "type": "string"
+            },
+            "format": {
+              "type": "string"
+            },
+            "styles": {
+              "type": "string"
+            },
+            "srid": {
+              "type": "integer"
+            },
+            "featureCount": {
+              "type": "integer"
             }
           },
           "required": [
-            "datasource"
-          ]
+            "wms_url",
+            "layers",
+            "format",
+            "srid"
+        ]
         },
         "bbox": {"$ref": "#/definitions/bbox"},
-        "crs": {
-          "type": "string"
+        "srid": {
+          "type": "integer"
         },
         "internal_print_layer": {
           "description": "Mark as internal print layer if set",
@@ -419,18 +454,40 @@
         "wmts_datasource": {
           "type": "object",
           "properties": {
-            "datasource": {
-              "description": "QGIS WMS datasource string",
+            "wmts_capabilities_url": {
+              "type": "string"
+            },
+            "layer": {
+              "type": "string"
+            },
+            "style": {
+              "type": "string"
+            },
+            "tile_dimensions": {
+              "type": "string"
+            },
+            "tile_matrix_set": {
+              "type": "string"
+            },
+            "srid": {
+              "type": "integer"
+            },
+            "format": {
               "type": "string"
             }
           },
           "required": [
-            "datasource"
+            "wmts_capabilities_url",
+            "layer",
+            "style",
+            "tile_matrix_set",
+            "srid",
+            "format"
           ]
         },
         "bbox": {"$ref": "#/definitions/bbox"},
-        "crs": {
-          "type": "string"
+        "srid": {
+          "type": "integer"
         },
         "internal_print_layer": {
           "description": "Mark as internal print layer if set",
