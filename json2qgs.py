@@ -362,6 +362,12 @@ class Json2Qgs():
                                    composers to the project
         """
 
+        if os.path.exists(self.project_output_dir) is False:
+            self.logger.error(
+                "Destination directory ({}) does not exist!".format(
+                    self.project_output_dir))
+            return
+
         qgis2_template = self.load_template("./qgs/service_2.qgs")
         layers = self.config.get("layers")
 
@@ -407,10 +413,22 @@ class Json2Qgs():
         binding = self.collect_wms_metadata(self.config.get(
             "wms_metadata", {}), layertree, composers=composers)
         qgs = qgs_template.render(**binding)
-        qgs_path = "./dein_test.qgs"
-        with open(qgs_path, 'w', encoding='utf-8') as f:
-            f.write(qgs)
-            self.logger.debug("Wrote %s" % os.path.abspath(qgs_path))
+
+        if with_composers is True:
+            mode = "print"
+        else:
+            mode = "wms"
+
+        qgs_path = os.path.join(self.project_output_dir, "somap_%s.qgs" % mode)
+
+        try:
+            with open(qgs_path, 'w', encoding='utf-8') as f:
+                f.write(qgs)
+                self.logger.debug("Wrote %s" % os.path.abspath(qgs_path))
+        except PermissionError:
+            self.logger.error(
+                "PermissionError: Could not write %s" % os.path.abspath(
+                    qgs_path))
 
 
 # command line interface
