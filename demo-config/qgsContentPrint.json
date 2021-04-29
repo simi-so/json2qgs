@@ -180,7 +180,8 @@
         "styles": "",
         "srid": 2056,
         "featureCount": 10
-      },      "bbox": {
+      },
+      "bbox": {
         "bounds": [
           2590983.475,
           1212806.1156,
