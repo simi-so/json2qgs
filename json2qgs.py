@@ -234,14 +234,52 @@ class Json2Qgs():
                 qgs_layer["attributes"] = qml["attr"]
 
         elif "wms_datasource" in layer_keys:
-            # NOTE: NOT TESTED
-            qgs_layer["provider"] = "wms"
-            qgs_layer["datasource"] = layer["wms_datasource"]["datasource"]
+            # Constant value
+            datasource = html.escape("contextualWMSLegend=0&")
+            datasource += html.escape(
+                "crs=EPSG:%s&" % layer["wms_datasource"]["srid"])
+            # Constant value
+            datasource += html.escape("dpiMode=7&")
+            datasource += html.escape(
+                "featureCount=%s&" % layer["wms_datasource"].get(
+                    "featureCount", 10))
+            datasource += html.escape(
+                "format=%s&" % layer["wms_datasource"]["format"])
+            datasource += html.escape(
+                "layers=%s&" % layer["wms_datasource"]["layers"])
+            datasource += html.escape(
+                "styles=%s&" % layer["wms_datasource"].get("styles", ""))
+            datasource += html.escape(
+                "url=%s" % layer["wms_datasource"]["wms_url"])
 
-        elif "wmts_datasource" in layer_keys:
-            # NOTE: NOT TESTED
             qgs_layer["provider"] = "wms"
-            qgs_layer["datasource"] = layer["wmts_datasource"]["datasource"]
+            qgs_layer["datasource"] = datasource
+        elif "wmts_datasource" in layer_keys:
+            # Constant value
+            datasource = html.escape("contextualWMSLegend=0&")
+            datasource += html.escape(
+                "crs=EPSG:%s&" % layer["wmts_datasource"]["srid"])
+            # Constant value
+            datasource += html.escape("dpiMode=7&")
+            # Constant value
+            datasource += html.escape("featureCount=10&")
+            datasource += html.escape(
+                "format=%s&" % layer["wmts_datasource"]["format"])
+            datasource += html.escape(
+                "layers=%s&" % layer["wmts_datasource"]["layer"])
+            datasource += html.escape(
+                "styles=%s&" % layer["wmts_datasource"].get("style", ""))
+            datasource += html.escape(
+                "tileDimensions=%s&" % layer["wmts_datasource"].get(
+                    "tile_dimensions", ""))
+            datasource += html.escape(
+                "tileMatrixSet=%s&" % layer["wmts_datasource"][
+                    "tile_matrix_set"])
+            datasource += html.escape(
+                "url=%s" % layer["wmts_datasource"]["wmts_capabilities_url"])
+
+            qgs_layer["provider"] = "wms"
+            qgs_layer["datasource"] = datasource
 
         return qgs_layer
 
@@ -352,16 +390,16 @@ class Json2Qgs():
             # If the asset path defines directories that do not exist,
             # then create those directories and save the asset image
             # TODO: Do we need path protection here? Example: /etc/passwd
-            for composer in self.config.get("composers", []):
+            for composer in self.config.get("print_templates", []):
                 try:
                     composers.append(base64.b64decode(
-                        composer["composer_base64"]).decode("utf-8"))
+                        composer["template_base64"]).decode("utf-8"))
 
                 except:
                     self.logger.error(
-                        "Error trying to decode composer!")
+                        "Error trying to decode print template!")
 
-                for asset in composer.get("composer_assets", []):
+                for asset in composer.get("template_assets", []):
                     try:
                         os.makedirs(
                             os.path.dirname(asset["path"]), exist_ok=True)
