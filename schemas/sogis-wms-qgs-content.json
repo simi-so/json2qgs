@@ -44,14 +44,14 @@
             "title": "Assets list used by the template",
             "type": "array",
             "items": {
-              "title": "QTP assets",
+              "title": "QPT assets",
               "type": "object",
               "properties": {
                 "path": {
                   "type": "string"
                 },
                 "base64": {
-                  "description": "QTP asset in Base64 encoding",
+                  "description": "QPT asset in Base64 encoding",
                   "type": "string",
                   "contentEncoding": "base64"
                 }
