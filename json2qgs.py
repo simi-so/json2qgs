@@ -49,18 +49,13 @@ class Json2Qgs():
 
         # get config settings
         self.project_output_dir = dest_path
-        # TODO: Is this needed?
-        # self.default_extent = config.get(
-        #     'default_extent', [2590983, 1212806, 2646267, 1262755]
-        # )
-        # TODO: Is this needed?
-        # self.default_raster_extent = config.get('default_raster_extent', None)
+        self.default_extent = config.get(
+            'wms_metadata', {}).get("bbox", {}).get("bounds", None)
         self.selection_color = config.get(
             'selection_color_rgba', [255, 255, 0, 255]
         )
 
         # load default styles
-        # TODO: Is this needed?
         self.default_styles = {
             "point": self.load_template('qgs/point.qml'),
             "linestring": self.load_template('qgs/linestring.qml'),
@@ -152,11 +147,10 @@ class Json2Qgs():
             "abstract": "",
             }
 
-        # TODO: Should we use a default extent here if bbox is not defined?
         if "bbox" in layer_keys:
             qgs_layer["extent"] = layer["bbox"]["bounds"]
         else:
-            qgs_layer["extent"] = None
+            qgs_layer["extent"] = self.default_extent
 
         if "postgis_datasource" in layer_keys:
             # datasource from the JSON config
@@ -303,7 +297,6 @@ class Json2Qgs():
         """
         # TODO: Where do we use this?
         wms_service_name = metadata.get('service_name', '')
-        # TODO: Where do we use this?
         wms_online_resource = metadata.get('online_resource', '')
 
         wms_extent = metadata.get('bbox')
@@ -316,8 +309,7 @@ class Json2Qgs():
                 'wms_service_abstract': html.escape(
                     metadata.get('service_abstract', '')),
                 'wms_keywords': metadata.get('keywords', None),
-                # TODO: Was kommt hier?
-                'wms_url': '',
+                'wms_url': html.escape(wms_online_resource),
                 'wms_contact_person': html.escape(
                     metadata.get('contact_person', '')),
                 'wms_contact_organization': html.escape(
