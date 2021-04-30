@@ -50,7 +50,7 @@ class Json2Qgs():
         self.config = config
 
         # get config settings
-        self.project_output_dir = dest_path
+        self.project_output_dir = os.path.abspath(dest_path)
         self.default_extent = config.get(
             'wms_metadata', {}).get("bbox", {}).get("bounds", None)
         self.selection_color = config.get(
@@ -131,6 +131,19 @@ class Json2Qgs():
         style = "".join([node.toxml() for node in qgis.childNodes])
         return {"attr": attr, "style": style}
 
+    def path_is_child(self, parent_path, child_path):
+        """Checks wheter child_path is a subdir in parent_path
+
+        param str parent_path :  Parent path
+        param str child_path : Child path
+        return bool : True if child is a subdir of parent
+        """
+        parent_path = os.path.abspath(parent_path)
+        child_path = os.path.abspath(child_path)
+
+        return os.path.commonpath([parent_path]) == os.path.commonpath(
+            [parent_path, child_path])
+
     def collect_layer(self, layer):
         """Collect layer info for layersubtree from qgsContent.
 
@@ -194,14 +207,21 @@ class Json2Qgs():
                 # in the filesystem
                 # If the asset path defines directories that do not exist,
                 # then create those directories and save the asset image
-                # TODO: Do we need path protection here? Example: /etc/passwd
                 for asset in layer["qml_assets"]:
                     try:
-                        os.makedirs(
-                            os.path.dirname(asset["path"]), exist_ok=True)
-                        with open(asset["path"], "wb") as fh:
-                            fh.write(
-                                base64.b64decode(asset["base64"]))
+                        if self.path_is_child(self.project_output_dir, asset["path"]):
+                            os.makedirs(
+                                os.path.dirname(asset["path"]), exist_ok=True)
+                            with open(asset["path"], "wb") as fh:
+                                fh.write(
+                                    base64.b64decode(asset["base64"]))
+                        else:
+                            self.logger.warning(
+                                "[Layer: {}] An error occured when trying "
+                                "to save {}\nAssets can only be"
+                                " saved under {}!".format(
+                                    qgs_layer["name"], asset["path"],
+                                    self.project_output_dir))
                     except Exception as e:
                         self.logger.warning(
                             "[Layer: {}] An error occured when trying to save {}\n{}".format(
@@ -392,7 +412,6 @@ class Json2Qgs():
             # in the filesystem
             # If the asset path defines directories that do not exist,
             # then create those directories and save the asset image
-            # TODO: Do we need path protection here? Example: /etc/passwd
             for composer in self.config.get("print_templates", []):
                 try:
                     composers.append(base64.b64decode(
@@ -404,11 +423,18 @@ class Json2Qgs():
 
                 for asset in composer.get("template_assets", []):
                     try:
-                        os.makedirs(
-                            os.path.dirname(asset["path"]), exist_ok=True)
-                        with open(asset["path"], "wb") as fh:
-                            fh.write(
-                                base64.b64decode(asset["base64"]))
+                        if self.path_is_child(self.project_output_dir, asset["path"]):
+                            os.makedirs(
+                                os.path.dirname(asset["path"]), exist_ok=True)
+                            with open(asset["path"], "wb") as fh:
+                                fh.write(
+                                    base64.b64decode(asset["base64"]))
+                        else:
+                            self.logger.warning(
+                                "An error occured when trying to save {}\n"
+                                "Assets can only be"
+                                " saved under {}".format(
+                                    asset["path"], self.project_output_dir))
                     except Exception as e:
                         self.logger.warning(
                             "An error occured when trying to save {}\n{}".format(
