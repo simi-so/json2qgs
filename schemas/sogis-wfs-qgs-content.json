@@ -85,7 +85,7 @@
             "table": {
               "type": "string"
             },
-            "primary_key": {
+            "unique_key": {
               "type": "string"
             },
             "geometry_field": {
@@ -110,7 +110,7 @@
             "dbconnection",
             "schema",
             "table",
-            "primary_key",
+            "unique_key",
             "geometry_field",
             "geometry_type",
             "srid"
