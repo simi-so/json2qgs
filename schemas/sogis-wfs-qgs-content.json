@@ -38,6 +38,12 @@
         "service_abstract": {
           "type": "string"
         },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "online_resource": {
           "type": "string",
           "format": "uri"
@@ -154,13 +160,22 @@
       ]
     },
     "bbox": {
-      "description": "Extent as [minx, miny, maxx, maxy]",
-      "type": "array",
-      "items": {
-        "type": "number"
-      },
-      "minItems": 4,
-      "maxItems": 4
+      "title": "Bounding box",
+      "type": "object",
+      "properties": {
+        "bounds": {
+          "description": "Extent as [minx, miny, maxx, maxy]",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "srid": {
+          "type": "integer"
+        }
+      }
     }
   }
 }
