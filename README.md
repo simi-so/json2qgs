@@ -19,7 +19,11 @@ WMS-Projekt generieren:
 
 Print-Projekt generieren:
 
-    python json2qgs.py demo-config/qgsContentPrint.json prints ./
+    python json2qgs.py demo-config/qgsContentPrint.json print ./
+
+WFS-Projekt generieren:
+
+    python json2qgs.py demo-config/qgsContentWFS.json wfs ./
 
 Entwicklung
 -----------
@@ -38,4 +42,4 @@ Anforderungen installieren:
 
 Erzeugen von QGIS-Projektdateien:
 
-    python json2qgs.py demo-config/qgsContentPrint.json prints .
+    python json2qgs.py demo-config/qgsContentPrint.json print .

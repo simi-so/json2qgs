@@ -1,0 +1,55 @@
+{
+  "$schema": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json",
+  "wfs_root_layer": "ch.so.agi.agi_hoheitsgrenzen_pub.hoheitsgrenzen_gemeindegrenze",
+  "layers": [
+    {
+      "name": "ch.so.agi.agi_hoheitsgrenzen_pub.hoheitsgrenzen_gemeindegrenze",
+      "type": "layer",
+      "title": "Gemeindegrenzen",
+      "datatype": "vector",
+      "postgis_datasource": {
+        "dbconnection": "postgresql:///?service=sogis_services",
+        "schema": "agi_hoheitsgrenzen_pub",
+        "table": "hoheitsgrenzen_gemeindegrenze",
+        "unique_key": "t_id",
+        "geometry_field": "geometrie",
+        "geometry_type": "MULTIPOLYGON",
+        "srid": 2056
+      },
+      "attributes": [
+        {
+          "name": "gemeindename",
+          "alias": "Gemeindename"
+        },
+        {
+          "name": "bfs_gemeindenummer",
+          "alias": "BFS-Nr."
+        },
+        {
+          "name": "bezirksname",
+          "alias": "Bezirksname"
+        }
+      ],
+      "bbox": {
+        "bounds": [
+          2592560.719,
+          1213703.19,
+          2644759.746,
+          1261330.177
+        ],
+        "srid": 2056
+      }
+    }
+  ],
+  "wfs_metadata": {
+    "service_name": "",
+    "service_title": "",
+    "service_abstract": "",
+    "keywords": [
+      "somap"
+    ],
+    "online_resource": "",
+    "fees": "",
+    "access_constraints": ""
+  }
+}

@@ -357,6 +357,36 @@ class Json2Qgs():
                 'selection_color': self.selection_color
             }
 
+    def collect_wfs_metadata(self, metadata, layertree):
+        """Collect wfs metadata from qgsContent
+
+        param dict metadata: Metadata specified in qgsContent
+        param list layertree: The whole QGS layer tree
+        """
+        # TODO: Where do we use this?
+        wms_service_name = metadata.get('service_name', '')
+        wms_online_resource = metadata.get('online_resource', '')
+
+        layer_ids = []
+
+        for layer in layertree:
+            layer_ids.append(layer["id"])
+
+        return {
+                'wms_service_title': html.escape(
+                    metadata.get('service_title', '')),
+                'wms_service_abstract': html.escape(
+                    metadata.get('service_abstract', '')),
+                'wms_keywords': metadata.get('keywords', None),
+                'wms_fees': html.escape(metadata.get('fees', '')),
+                'wms_access_constraints': html.escape(
+                    metadata.get('access_constraints', '')),
+                'layertree': layertree,
+                'wfs_layers': layer_ids,
+                'composers': [],
+                'selection_color': self.selection_color
+            }
+
     def collect_group_layer(self, group_layer, layers):
         """Collect group layer info for layersubtree from qgsContent.
 
@@ -451,6 +481,45 @@ class Json2Qgs():
             mode = "wms"
 
         qgs_path = os.path.join(self.project_output_dir, "somap_%s.qgs" % mode)
+
+        try:
+            with open(qgs_path, 'w', encoding='utf-8') as f:
+                f.write(qgs)
+                self.logger.debug("Wrote %s" % os.path.abspath(qgs_path))
+        except PermissionError:
+            self.logger.error(
+                "PermissionError: Could not write %s" % os.path.abspath(
+                    qgs_path))
+
+    def generate_wfs_project(self):
+        """Generate WFS project
+
+        """
+
+        if os.path.exists(self.project_output_dir) is False:
+            self.logger.error(
+                "Destination directory ({}) does not exist!".format(
+                    self.project_output_dir))
+            return
+
+        if self.validate_schema() is False:
+            return
+
+        qgis2_template = self.load_template("./qgs/service_2.qgs")
+        layers = self.config.get("layers")
+
+        composers = []
+        layertree = []
+
+        for layer in layers:
+            layertree.append(self.collect_layer(layer))
+
+        qgs_template = Template(qgis2_template)
+        binding = self.collect_wfs_metadata(self.config.get(
+            "wfs_metadata", {}), layertree)
+        qgs = qgs_template.render(**binding)
+
+        qgs_path = os.path.join(self.project_output_dir, "somap_wfs.qgs")
 
         try:
             with open(qgs_path, 'w', encoding='utf-8') as f:
@@ -576,7 +645,7 @@ if __name__ == '__main__':
     generator = Json2Qgs(config, logger, args.destination)
     if args.mode == 'wms':
         generator.generate_wms_project()
-    elif args.mode == 'prints':
+    elif args.mode == 'print':
         generator.generate_wms_project(with_composers=True)
     elif args.mode == 'wfs':
-        pass
+        generator.generate_wfs_project()
