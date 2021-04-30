@@ -551,8 +551,8 @@ if __name__ == '__main__':
         'qgsContent', help="Path to qgsContent config file"
     )
     parser.add_argument(
-        "mode", choices=['wms', 'prints', 'wfs'],
-        help="Availabel modes: WMS/Print/WFS"
+        "mode", choices=['wms', 'print', 'wfs'],
+        help="Availabel modes: wms, print, wfs"
     )
     parser.add_argument(
         "destination",
