@@ -19,137 +19,147 @@
       "type": "array",
       "items": {
         "oneOf": [
-          {"$ref": "#/definitions/productset"},
-          {"$ref": "#/definitions/vector_layer"},
-          {"$ref": "#/definitions/raster_layer"},
-          {"$ref": "#/definitions/wms_layer"},
-          {"$ref": "#/definitions/wmts_layer"}
+          {
+            "$ref": "#/definitions/productset"
+          },
+          {
+            "$ref": "#/definitions/vector_layer"
+          },
+          {
+            "$ref": "#/definitions/raster_layer"
+          },
+          {
+            "$ref": "#/definitions/wms_layer"
+          },
+          {
+            "$ref": "#/definitions/wmts_layer"
+          }
         ]
       }
     }
-   },
-    "print_templates": {
-      "title": "Print Templates",
-      "type": "array",
-      "items": {
-        "title": "Print Composer template",
-        "type": "object",
-        "properties": {
-          "template_base64": {
-            "description": "Print Composer template in Base64 encoding",
-            "type": "string",
-            "contentEncoding": "base64"
-          },
-          "template_assets": {
-            "title": "Assets list used by the template",
-            "type": "array",
-            "items": {
-              "title": "QPT assets",
-              "type": "object",
-              "properties": {
-                "path": {
-                  "type": "string"
-                },
-                "base64": {
-                  "description": "QPT asset in Base64 encoding",
-                  "type": "string",
-                  "contentEncoding": "base64"
-                }
+  },
+  "print_templates": {
+    "title": "Print Templates",
+    "type": "array",
+    "items": {
+      "title": "Print Composer template",
+      "type": "object",
+      "properties": {
+        "template_base64": {
+          "description": "Print Composer template in Base64 encoding",
+          "type": "string",
+          "contentEncoding": "base64"
+        },
+        "template_assets": {
+          "title": "Assets list used by the template",
+          "type": "array",
+          "items": {
+            "title": "QPT assets",
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "base64": {
+                "description": "QPT asset in Base64 encoding",
+                "type": "string",
+                "contentEncoding": "base64"
               }
             }
           }
-        },
-        "required": [
-          "template_base64"
-        ]
-      }
-  },
-    "selection_color": {
-      "title": "Selection color as RGBA",
-      "type": "array",
-      "items": {
-        "type": "integer"
+        }
       },
-      "minItems": 4,
-      "maxItems": 4
+      "required": [
+        "template_base64"
+      ]
+    }
+  },
+  "selection_color": {
+    "title": "Selection color as RGBA",
+    "type": "array",
+    "items": {
+      "type": "integer"
     },
-    "wms_metadata": {
-      "title": "Metadata for WMS GetCapabilities",
-      "type": "object",
-      "properties": {
-        "service_name": {
+    "minItems": 4,
+    "maxItems": 4
+  },
+  "wms_metadata": {
+    "title": "Metadata for WMS GetCapabilities",
+    "type": "object",
+    "properties": {
+      "service_name": {
+        "type": "string"
+      },
+      "service_title": {
+        "type": "string"
+      },
+      "service_abstract": {
+        "type": "string"
+      },
+      "keywords": {
+        "type": "array",
+        "items": {
           "type": "string"
-        },
-        "service_title": {
+        }
+      },
+      "online_resource": {
+        "type": "string",
+        "format": "uri"
+      },
+      "contact_person": {
+        "type": "string"
+      },
+      "contact_organization": {
+        "type": "string"
+      },
+      "contact_position": {
+        "type": "string"
+      },
+      "contact_phone": {
+        "type": "string"
+      },
+      "contact_mail": {
+        "type": "string",
+        "format": "email"
+      },
+      "fees": {
+        "type": "string"
+      },
+      "access_constraints": {
+        "type": "string"
+      },
+      "root_name": {
+        "type": "string"
+      },
+      "root_title": {
+        "type": "string"
+      },
+      "crs_list": {
+        "type": "array",
+        "items": {
           "type": "string"
-        },
-        "service_abstract": {
-          "type": "string"
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "online_resource": {
-          "type": "string",
-          "format": "uri"
-        },
-        "contact_person": {
-          "type": "string"
-        },
-        "contact_organization": {
-          "type": "string"
-        },
-        "contact_position": {
-          "type": "string"
-        },
-        "contact_phone": {
-          "type": "string"
-        },
-        "contact_mail": {
-          "type": "string",
-          "format": "email"
-        },
-        "fees": {
-          "type": "string"
-        },
-        "access_constraints": {
-          "type": "string"
-        },
-        "root_name": {
-          "type": "string"
-        },
-        "root_title": {
-          "type": "string"
-        },
-        "crs_list": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "bbox": {
-          "title": "Bounding box",
-          "type": "object",
-          "properties": {
-            "bounds": {
-              "description": "Extent as [minx, miny, maxx, maxy]",
-              "type": "array",
-              "items": {
-                "type": "number"
-              },
-              "minItems": 4,
-              "maxItems": 4
+        }
+      },
+      "bbox": {
+        "title": "Bounding box",
+        "type": "object",
+        "properties": {
+          "bounds": {
+            "description": "Extent as [minx, miny, maxx, maxy]",
+            "type": "array",
+            "items": {
+              "type": "number"
             },
-            "srid": {
-              "type": "string"
-            }
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "srid": {
+            "type": "integer"
           }
         }
       }
-    },
+    }
+  },
   "definitions": {
     "productset": {
       "type": "object",
@@ -161,7 +171,7 @@
         "type": {
           "description": "Layer type",
           "type": "string",
-          "const": "layergroup"
+          "const": "productset"
         },
         "title": {
           "description": "Group title",
@@ -295,7 +305,9 @@
             ]
           }
         },
-        "bbox": {"$ref": "#/definitions/bbox"},
+        "bbox": {
+          "$ref": "#/definitions/bbox"
+        },
         "srid": {
           "type": "integer"
         }
@@ -350,7 +362,9 @@
           "type": "string",
           "contentEncoding": "base64"
         },
-        "bbox": {"$ref": "#/definitions/bbox"},
+        "bbox": {
+          "$ref": "#/definitions/bbox"
+        },
         "srid": {
           "type": "integer"
         }
@@ -411,9 +425,11 @@
             "layers",
             "format",
             "srid"
-        ]
+          ]
         },
-        "bbox": {"$ref": "#/definitions/bbox"},
+        "bbox": {
+          "$ref": "#/definitions/bbox"
+        },
         "srid": {
           "type": "integer"
         },
@@ -485,7 +501,9 @@
             "format"
           ]
         },
-        "bbox": {"$ref": "#/definitions/bbox"},
+        "bbox": {
+          "$ref": "#/definitions/bbox"
+        },
         "srid": {
           "type": "integer"
         },
@@ -503,13 +521,22 @@
       ]
     },
     "bbox": {
-      "description": "Extent as [minx, miny, maxx, maxy]",
-      "type": "array",
-      "items": {
-        "type": "number"
-      },
-      "minItems": 4,
-      "maxItems": 4
+      "title": "Bounding box",
+      "type": "object",
+      "properties": {
+        "bounds": {
+          "description": "Extent as [minx, miny, maxx, maxy]",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "srid": {
+          "type": "integer"
+        }
+      }
     }
   }
 }
