@@ -19,7 +19,9 @@
       "type": "array",
       "items": {
         "oneOf": [
-          {"$ref": "#/definitions/vector_layer"}
+          {
+            "$ref": "#/definitions/vector_layer"
+          }
         ]
       }
     },
@@ -136,7 +138,9 @@
             ]
           }
         },
-        "bbox": {"$ref": "#/definitions/bbox"},
+        "bbox": {
+          "$ref": "#/definitions/bbox"
+        },
         "srid": {
           "type": "integer"
         }

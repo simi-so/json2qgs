@@ -228,7 +228,10 @@
     }
   ],
   "selection_color_rgba": [
-    255, 255, 0, 255
+    255,
+    255,
+    0,
+    255
   ],
   "wms_metadata": {
     "service_name": "",
