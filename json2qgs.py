@@ -264,7 +264,8 @@ class Json2Qgs():
             datasource += html.escape(
                 "layers=%s&" % layer["wms_datasource"]["layers"])
             datasource += html.escape(
-                "styles=%s&" % layer["wms_datasource"].get("styles", ""))
+                "styles=%s&" % layer["wms_datasource"].get(
+                    "styles", self.default_styles["raster"]))
             datasource += html.escape(
                 "url=%s" % layer["wms_datasource"]["wms_url"])
 
@@ -284,7 +285,8 @@ class Json2Qgs():
             datasource += html.escape(
                 "layers=%s&" % layer["wmts_datasource"]["layer"])
             datasource += html.escape(
-                "styles=%s&" % layer["wmts_datasource"].get("style", ""))
+                "styles=%s&" % layer["wmts_datasource"].get(
+                    "style", self.default_styles["raster"]))
             datasource += html.escape(
                 "tileDimensions=%s&" % layer["wmts_datasource"].get(
                     "tile_dimensions", ""))
