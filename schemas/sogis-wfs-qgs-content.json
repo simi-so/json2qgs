@@ -11,10 +11,6 @@
       "format": "uri",
       "default": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json"
     },
-    "wfs_root_layer": {
-      "title": "WFS root layer name",
-      "type": "string"
-    },
     "layers": {
       "type": "array",
       "items": {

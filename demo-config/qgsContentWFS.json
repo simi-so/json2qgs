@@ -1,6 +1,5 @@
 {
   "$schema": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json",
-  "wfs_root_layer": "ch.so.agi.agi_hoheitsgrenzen_pub.hoheitsgrenzen_gemeindegrenze",
   "layers": [
     {
       "name": "ch.so.agi.agi_hoheitsgrenzen_pub.hoheitsgrenzen_gemeindegrenze",
