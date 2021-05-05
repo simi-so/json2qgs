@@ -152,11 +152,10 @@ class Json2Qgs():
 
         layer_keys = layer.keys()
         qgs_layer = {
+            "type": "layer",
             "name": html.escape(layer["name"]),
-            "type": layer["type"],
             "title": html.escape(layer["title"]),
             "id": str(uuid.uuid4()),
-            "layertype": layer["datatype"],
             "mapTip": "",
             "dataUrl": "",
             "abstract": "",
@@ -170,6 +169,7 @@ class Json2Qgs():
         if "postgis_datasource" in layer_keys:
             # datasource from the JSON config
             datasource = layer["postgis_datasource"]
+            qgs_layer["layertype"] = "vector"
             qgs_layer["provider"] = "postgres"
             qgs_layer["datasource"] = (
                 "{db_connection} sslmode=disable key='{pkey}' srid={srid} "
@@ -231,6 +231,7 @@ class Json2Qgs():
             # TODO: srid is not used here?
             # datasource from the JSON config
             qgs_layer["provider"] = "gdal"
+            qgs_layer["layertype"] = "raster"
             qgs_layer["datasource"] = layer["raster_datasource"]["datasource"]
 
             try:
@@ -271,6 +272,7 @@ class Json2Qgs():
 
             qgs_layer["provider"] = "wms"
             qgs_layer["datasource"] = datasource
+            qgs_layer["layertype"] = "raster"
         elif "wmts_datasource" in layer_keys:
             # Constant value
             datasource = html.escape("contextualWMSLegend=0&")
@@ -298,6 +300,7 @@ class Json2Qgs():
 
             qgs_layer["provider"] = "wms"
             qgs_layer["datasource"] = datasource
+            qgs_layer["layertype"] = "raster"
 
         return qgs_layer
 
