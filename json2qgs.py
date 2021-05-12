@@ -12,21 +12,35 @@ import uuid
 import re
 import requests
 import jsonschema
+import logging
 
 
 class Logger():
     """Simple logger class"""
+
+    def __init__(self, logger_name, logging_level):
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(logging_level)
+
+        stream_handler = logging.StreamHandler()
+        # \x1b[0m resets the color to default
+        stream_handler.setFormatter(
+            logging.Formatter(
+                "[%(asctime)s] %(color)s %(levelname)s: %(message)s \x1b[0m"))
+
+        self.logger.addHandler(stream_handler)
+
     def debug(self, msg):
-        print("[%s] \033[36mDEBUG: %s\033[0m" % (self.timestamp(), msg))
+        self.logger.debug(msg, extra={'color': "\033[36m"})
 
     def info(self, msg):
-        print("[%s] INFO: %s" % (self.timestamp(), msg))
+        self.logger.info(msg, extra={'color': ""})
 
     def warning(self, msg):
-        print("[%s] \033[33mWARNING: %s\033[0m" % (self.timestamp(), msg))
+        self.logger.warning(msg, extra={'color': "\033[33m"})
 
     def error(self, msg):
-        print("[%s] \033[31mERROR: %s\033[0m" % (self.timestamp(), msg))
+        self.logger.error(msg, extra={'color': "\033[31m"})
 
     def timestamp(self):
         return datetime.now()
@@ -645,10 +659,6 @@ if __name__ == '__main__':
     # parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'qgsTemplateDir', help="Path to template directory",
-        default="qgs/", nargs='?'
-    )
-    parser.add_argument(
         'qgsContent', help="Path to qgsContent config file"
     )
     parser.add_argument(
@@ -663,6 +673,14 @@ if __name__ == '__main__':
         "qgisVersion", choices=['2', '3'],
         help="Wether to use the QGIS 2 or QGIS 3 service template"
     )
+    parser.add_argument(
+        '--qgsTemplateDir', help="Path to template directory",
+        default="qgs/", nargs='?'
+    )
+    parser.add_argument(
+        "--log_level", choices=['info', 'debug'], default="info", nargs='?',
+        help="Specifies the log level"
+    )
     args = parser.parse_args()
 
     # read Json2Qgs config file
@@ -674,8 +692,13 @@ if __name__ == '__main__':
         print("Error loading qgsContent JSON:\n%s" % e)
         exit(1)
 
+    if args.log_level == "debug":
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.INFO
+
     # create logger
-    logger = Logger()
+    logger = Logger("Json2Qgs", log_level)
 
     # create Json2Qgs
     generator = Json2Qgs(
