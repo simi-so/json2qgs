@@ -19,7 +19,7 @@
   </projectCrs>
   <layer-tree-group>
     {%- for item in layertree recursive -%}
-        {% if item['type'] == "group" %}
+        {% if item['type'] == "productset" %}
             <layer-tree-group expanded="1" checked="Qt::Checked" name="{{ item['name'] }}">
                 <customproperties>
                   <property key="wmsAbstract" value=""/>
@@ -66,7 +66,7 @@
   <projectModels/>
   <legend updateDrawingOrder="true">
     {% for item in layertree recursive %}
-      {% if item['type'] == "group" %}
+      {% if item['type'] == "productset" %}
         <legendgroup open="true" checked="Qt::Checked" name="{{ item['name'] }}">
           {{ loop(item['items']) }}
         </legendgroup>
@@ -82,7 +82,7 @@
   <mapViewDocks/>
   <projectlayers>
     {%- for item in layertree recursive -%}
-        {%- if item['type'] == "group" -%}
+        {%- if item['type'] == "productset" -%}
             {{ loop(item['items']) }}
         {% elif item['type'] %}
             <maplayer type="{{ item['layertype'] }}" {{ item['attributes'] }}>
@@ -258,7 +258,7 @@
       <Delete type="QStringList"/>
       <Update type="QStringList"/>
       <Insert type="QStringList"/>
-    </WFSTLayers>    
+    </WFSTLayers>
 
     <WCSUrl type="QString"></WCSUrl>
     <WCSLayers type="QStringList"/>
