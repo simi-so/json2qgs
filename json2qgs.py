@@ -429,7 +429,7 @@ class Json2Qgs():
         if self.validate_schema() is False:
             return
 
-        qgis2_template = self.load_template(self.qgs_template_fn)
+        qgis_template = self.load_template(self.qgs_template_fn)
         layers = self.config.get("layers")
 
         composers = []
@@ -476,7 +476,7 @@ class Json2Qgs():
                             "An error occured when trying to save {}\n{}".format(
                                 asset["path"], str(e)))
 
-        qgs_template = Template(qgis2_template)
+        qgs_template = Template(qgis_template)
         binding = self.collect_wms_metadata(self.config.get(
             "wms_metadata", {}), layertree, composers=composers)
         qgs = qgs_template.render(**binding)
@@ -511,7 +511,7 @@ class Json2Qgs():
         if self.validate_schema() is False:
             return
 
-        qgis2_template = self.load_template(self.qgs_template_fn)
+        qgis_template = self.load_template(self.qgs_template_fn)
         layers = self.config.get("layers")
 
         composers = []
@@ -520,7 +520,7 @@ class Json2Qgs():
         for layer in layers:
             layertree.append(self.collect_layer(layer))
 
-        qgs_template = Template(qgis2_template)
+        qgs_template = Template(qgis_template)
         binding = self.collect_wfs_metadata(self.config.get(
             "wfs_metadata", {}), layertree)
         qgs = qgs_template.render(**binding)
