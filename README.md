@@ -7,6 +7,15 @@ Lastenheft: https://github.com/simi-so/simi/blob/master/mp/kp/k2/K2_QgsTrafoLast
 Benutzung
 ---------
 
+### Kommandozeilenparameter
+
+| Bezeichnung | Beschreibung | Beispiel |
+|-------------|--------------|----------|
+| qgsContent  | Pfad zu "qgsContent.json" |
+| mode        | Der Modus beschreibt welche Art von Projekt generiert werden soll.<br> - `wms`: WMS-Projekt generieren (ohne print templates) <br> - `print`: WMS-Projekt generieren (mit print template) <br> - `wfs`: WFS-Projekt generieren  |
+| destination | Pfad, unter welchem das erzeugte QGS abgelegt wird |
+| qgisVersion | Ziel QGIS version des generierten Projekt. <br> - `2`: QGIS 2 <br> - `3`: QGIS 3 |
+
 ### Skript
 
 Alle Befehle anzeigen:
