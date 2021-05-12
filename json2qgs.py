@@ -38,17 +38,21 @@ class Json2Qgs():
     Generate QGS and QML files from a JSON config file.
     """
 
-    def __init__(self, config, logger, dest_path, qgs_template_fn):
+    def __init__(self, config, logger, dest_path, qgisVersion,
+                 qgsTemplateDir):
         """Constructor
 
         :param obj config: Json2Qgs config
         :param Logger logger: Logger
         :param str dest_path: Path where the generated files should be saved
+        :param str qgisVersion: Define the version of the QGIS template to use
+        :param str qgsTemplateDir: Path to the qgs template dir where the
+                   default QMLs and QGIS template files should exist
         """
         self.logger = logger
 
         self.config = config
-        self.qgs_template_fn = qgs_template_fn
+        self.can_generate = True
 
         # get config settings
         self.project_output_dir = os.path.abspath(dest_path)
@@ -58,12 +62,29 @@ class Json2Qgs():
             'selection_color_rgba', [255, 255, 0, 255]
         )
 
+        if qgisVersion == '3':
+            self.qgs_template_fn = os.path.join(
+                qgsTemplateDir, 'service_3.qgs')
+        else:
+            self.qgs_template_fn = os.path.join(
+                qgsTemplateDir, 'service_2.qgs')
+
+        if not os.path.exists(self.qgs_template_fn):
+            self.can_generate = False
+            self.logger.error(
+                "Could not find QGIS template file under: %s" % (
+                    self.qgs_template_fn))
+
         # load default styles
         self.default_styles = {
-            "point": self.load_template('qgs/point.qml'),
-            "linestring": self.load_template('qgs/linestring.qml'),
-            "polygon": self.load_template('qgs/polygon.qml'),
-            "raster": self.load_template('qgs/raster.qml')
+            "point": self.load_template(
+                os.path.join(qgsTemplateDir, 'point.qml')),
+            "linestring": self.load_template(
+                os.path.join(qgsTemplateDir, 'linestring.qml')),
+            "polygon": self.load_template(
+                os.path.join(qgsTemplateDir, 'polygon.qml')),
+            "raster": self.load_template(
+                os.path.join(qgsTemplateDir, 'raster.qml'))
         }
 
         self.wms_top_layer = config.get("wms_top_layers", [])
@@ -82,6 +103,7 @@ class Json2Qgs():
             with open(path) as f:
                 template = f.read()
         except Exception as e:
+            self.can_generate = False
             self.logger.error("Error loading template file '%s':\n%s" % (path, e))
 
         return template
@@ -623,6 +645,10 @@ if __name__ == '__main__':
     # parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        'qgsTemplateDir', help="Path to template directory",
+        default="qgs/", nargs='?'
+    )
+    parser.add_argument(
         'qgsContent', help="Path to qgsContent config file"
     )
     parser.add_argument(
@@ -651,14 +677,15 @@ if __name__ == '__main__':
     # create logger
     logger = Logger()
 
-    if args.qgisVersion == '3':
-        qgs_template_fn = 'qgs/service_3.qgs'
-    else:
-        qgs_template_fn = 'qgs/service_2.qgs'
-
     # create Json2Qgs
-    generator = Json2Qgs(config, logger, args.destination, qgs_template_fn)
-    if args.mode == 'wms':
+    generator = Json2Qgs(
+        config, logger, args.destination,
+        args.qgisVersion, args.qgsTemplateDir)
+    if not generator.can_generate:
+        print(
+            "Error: Generator stopped! Please check if all"
+            " files that are needed exist in: %s" % args.qgsTemplateDir)
+    elif args.mode == 'wms':
         generator.generate_wms_project()
     elif args.mode == 'print':
         generator.generate_wms_project(with_composers=True)
