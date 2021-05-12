@@ -38,7 +38,7 @@ class Json2Qgs():
     Generate QGS and QML files from a JSON config file.
     """
 
-    def __init__(self, config, logger, dest_path):
+    def __init__(self, config, logger, dest_path, qgs_template_fn):
         """Constructor
 
         :param obj config: Json2Qgs config
@@ -48,6 +48,7 @@ class Json2Qgs():
         self.logger = logger
 
         self.config = config
+        self.qgs_template_fn = qgs_template_fn
 
         # get config settings
         self.project_output_dir = os.path.abspath(dest_path)
@@ -428,7 +429,7 @@ class Json2Qgs():
         if self.validate_schema() is False:
             return
 
-        qgis2_template = self.load_template("./qgs/service_2.qgs")
+        qgis2_template = self.load_template(self.qgs_template_fn)
         layers = self.config.get("layers")
 
         composers = []
@@ -510,7 +511,7 @@ class Json2Qgs():
         if self.validate_schema() is False:
             return
 
-        qgis2_template = self.load_template("./qgs/service_2.qgs")
+        qgis2_template = self.load_template(self.qgs_template_fn)
         layers = self.config.get("layers")
 
         composers = []
@@ -632,6 +633,10 @@ if __name__ == '__main__':
         "destination",
         help="Directory where the generated QGS and QML assets should be saved in"
     )
+    parser.add_argument(
+        "qgisVersion", choices=['2', '3'],
+        help="Wether to use the QGIS 2 or QGIS 3 service template"
+    )
     args = parser.parse_args()
 
     # read Json2Qgs config file
@@ -646,8 +651,13 @@ if __name__ == '__main__':
     # create logger
     logger = Logger()
 
+    if args.qgisVersion == '3':
+        qgs_template_fn = 'qgs/service_3.qgs'
+    else:
+        qgs_template_fn = 'qgs/service_2.qgs'
+
     # create Json2Qgs
-    generator = Json2Qgs(config, logger, args.destination)
+    generator = Json2Qgs(config, logger, args.destination, qgs_template_fn)
     if args.mode == 'wms':
         generator.generate_wms_project()
     elif args.mode == 'print':
