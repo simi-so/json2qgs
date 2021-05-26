@@ -449,7 +449,7 @@ class Json2Qgs():
             "items": sublayers
         }
 
-    def generate_wms_project(self, with_composers=False):
+    def generate_wms_project(self):
         """Generate project
 
         param bool with_composers: Wether to add the defined
@@ -479,45 +479,44 @@ class Json2Qgs():
                     layertree.append(
                         self.collect_group_layer(layer, layers))
 
-        if with_composers:
-            # Iterate through all assets used in the QTP and save them
-            # in the filesystem
-            # If the asset path defines directories that do not exist,
-            # then create those directories and save the asset image
-            for composer in self.config.get("print_templates", []):
+        # Iterate through all assets used in the QPT and save them
+        # in the filesystem
+        # If the asset path defines directories that do not exist,
+        # then create those directories and save the asset image
+        for composer in self.config.get("print_templates", []):
+            try:
+                composers.append(base64.b64decode(
+                    composer["template_base64"]).decode("utf-8"))
+
+            except:
+                self.logger.error(
+                    "Error trying to decode print template!")
+
+            for asset in composer.get("template_assets", []):
                 try:
-                    composers.append(base64.b64decode(
-                        composer["template_base64"]).decode("utf-8"))
-
-                except:
-                    self.logger.error(
-                        "Error trying to decode print template!")
-
-                for asset in composer.get("template_assets", []):
-                    try:
-                        if self.path_is_child(self.project_output_dir, asset["path"]):
-                            os.makedirs(
-                                os.path.dirname(asset["path"]), exist_ok=True)
-                            with open(asset["path"], "wb") as fh:
-                                fh.write(
-                                    base64.b64decode(asset["base64"]))
-                        else:
-                            self.logger.warning(
-                                "An error occured when trying to save {}\n"
-                                "Assets can only be"
-                                " saved under {}".format(
-                                    asset["path"], self.project_output_dir))
-                    except Exception as e:
+                    if self.path_is_child(self.project_output_dir, asset["path"]):
+                        os.makedirs(
+                            os.path.dirname(asset["path"]), exist_ok=True)
+                        with open(asset["path"], "wb") as fh:
+                            fh.write(
+                                base64.b64decode(asset["base64"]))
+                    else:
                         self.logger.warning(
-                            "An error occured when trying to save {}\n{}".format(
-                                asset["path"], str(e)))
+                            "An error occured when trying to save {}\n"
+                            "Assets can only be"
+                            " saved under {}".format(
+                                asset["path"], self.project_output_dir))
+                except Exception as e:
+                    self.logger.warning(
+                        "An error occured when trying to save {}\n{}".format(
+                            asset["path"], str(e)))
 
         qgs_template = Template(qgis_template)
         binding = self.collect_wms_metadata(self.config.get(
             "wms_metadata", {}), layertree, composers=composers)
         qgs = qgs_template.render(**binding)
 
-        if with_composers is True:
+        if len(self.config.get("print_templates", [])) > 0:
             mode = "print"
         else:
             mode = "wms"
@@ -662,8 +661,8 @@ if __name__ == '__main__':
         'qgsContent', help="Path to qgsContent config file"
     )
     parser.add_argument(
-        "mode", choices=['wms', 'print', 'wfs'],
-        help="Availabel modes: wms, print, wfs"
+        "mode", choices=['wms', 'wfs'],
+        help="Availabel modes: wms, wfs"
     )
     parser.add_argument(
         "destination",
@@ -710,7 +709,5 @@ if __name__ == '__main__':
             " files that are needed exist in: %s" % args.qgsTemplateDir)
     elif args.mode == 'wms':
         generator.generate_wms_project()
-    elif args.mode == 'print':
-        generator.generate_wms_project(with_composers=True)
     elif args.mode == 'wfs':
         generator.generate_wfs_project()
