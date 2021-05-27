@@ -1,0 +1,16 @@
+version: '2.1'
+services:
+  postgis:
+    image: registry.hub.docker.com/sourcepole/sogis-postgis
+    ports:
+     - "127.0.0.1:5439:5432"
+
+  qgis-server:
+    image: sourcepole/qwc-qgis-server:2.18.28
+    ports:
+     - "127.0.0.1:8001:80"
+    volumes:
+      - ./pg_service.conf:/var/www/.pg_service.conf:ro
+      - ./volumes/qgs-resources:/data:ro
+    depends_on:
+      - postgis
