@@ -14,7 +14,7 @@ import itertools
 class CapabilitiesTest(unittest.TestCase):
     """Test case for the generation of qgis projects"""
 
-    def test_qgis_print(self):
+    def test_generated_qgis_projects(self):
         """Test whether the capabilities of the generated QGIS project has
            included the same layers as defined in the json2qgs config.
         """
@@ -134,7 +134,7 @@ class CapabilitiesTest(unittest.TestCase):
         ElementTree.register_namespace(
             'xlink', 'http://www.w3.org/1999/xlink'
         )
-        print(response.url)
+
         xml_root = ElementTree.fromstring(response.content)
 
         # use default namespace for XML search
