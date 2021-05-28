@@ -52,6 +52,9 @@ class Json2Qgs():
     Generate QGS and QML files from a JSON config file.
     """
 
+    # default extent for WMS and layers if not set in config
+    DEFAULT_EXTENT = [2590983, 1212806, 2646267, 1262755]
+
     def __init__(self, config, logger, dest_path, qgisVersion,
                  qgsTemplateDir):
         """Constructor
@@ -68,10 +71,20 @@ class Json2Qgs():
         self.config = config
         self.can_generate = True
 
-        # get config settings
         self.project_output_dir = os.path.abspath(dest_path)
-        self.default_extent = config.get(
-            'wms_metadata', {}).get("bbox", {}).get("bounds", None)
+
+        # get config settings
+
+        # default extent
+        if 'wms_metadata' in config:
+            self.default_extent = config.get('wms_metadata', {}) \
+                .get("bbox", {}).get("bounds", self.DEFAULT_EXTENT)
+        elif 'wfs_metadata' in config:
+            self.default_extent = config.get('wfs_metadata', {}) \
+                .get("bbox", {}).get("bounds", self.DEFAULT_EXTENT)
+        else:
+            self.default_extent = self.DEFAULT_EXTENT
+
         self.selection_color = config.get(
             'selection_color_rgba', [255, 255, 0, 255]
         )

@@ -47,6 +47,15 @@
     ],
     "online_resource": "",
     "fees": "",
-    "access_constraints": ""
+    "access_constraints": "",
+    "bbox": {
+      "bounds": [
+        2590983,
+        1212806,
+        2646267,
+        1262755
+      ],
+      "srid": 2056
+    }
   }
 }

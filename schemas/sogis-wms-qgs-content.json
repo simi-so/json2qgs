@@ -190,22 +190,7 @@
           }
         },
         "bbox": {
-          "title": "Bounding box",
-          "type": "object",
-          "properties": {
-            "bounds": {
-              "description": "Extent as [minx, miny, maxx, maxy]",
-              "type": "array",
-              "items": {
-                "type": "number"
-              },
-              "minItems": 4,
-              "maxItems": 4
-            },
-            "srid": {
-              "type": "integer"
-            }
-          }
+          "$ref": "#/definitions/bbox"
         }
       }
     }
@@ -480,6 +465,7 @@
           ]
         },
         "bbox": {
+          "description": "Overall extent of WMS, also used as default extent for layers",
           "$ref": "#/definitions/bbox"
         },
         "srid": {
@@ -588,7 +574,11 @@
         "srid": {
           "type": "integer"
         }
-      }
+      },
+      "required": [
+        "bounds",
+        "srid"
+      ]
     }
   }
 }

@@ -70,6 +70,10 @@
             "string",
             "null"
           ]
+        },
+        "bbox": {
+          "description": "Default extent for layers",
+          "$ref": "#/definitions/bbox"
         }
       }
     }
@@ -181,7 +185,11 @@
         "srid": {
           "type": "integer"
         }
-      }
+      },
+      "required": [
+        "bounds",
+        "srid"
+      ]
     }
   }
 }
