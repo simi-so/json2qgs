@@ -58,6 +58,7 @@
             "type": "object",
             "properties": {
               "path": {
+                "description": "Asset path relative to QGIS project file",
                 "type": "string"
               },
               "base64": {
@@ -65,7 +66,11 @@
                 "type": "string",
                 "contentEncoding": "base64"
               }
-            }
+            },
+            "required": [
+              "path",
+              "base64"
+            ]
           }
         }
       },
@@ -273,6 +278,7 @@
             "type": "object",
             "properties": {
               "path": {
+                "description": "Asset path relative to QGIS project file",
                 "type": "string"
               },
               "base64": {

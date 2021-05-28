@@ -246,10 +246,13 @@ class Json2Qgs():
                 # then create those directories and save the asset image
                 for asset in layer["qml_assets"]:
                     try:
-                        if self.path_is_child(self.project_output_dir, asset["path"]):
+                        asset_path = os.path.join(
+                            self.project_output_dir, asset["path"]
+                        )
+                        if self.path_is_child(self.project_output_dir, asset_path):
                             os.makedirs(
-                                os.path.dirname(asset["path"]), exist_ok=True)
-                            with open(asset["path"], "wb") as fh:
+                                os.path.dirname(asset_path), exist_ok=True)
+                            with open(asset_path, "wb") as fh:
                                 fh.write(
                                     base64.b64decode(asset["base64"]))
                         else:
@@ -494,10 +497,13 @@ class Json2Qgs():
 
             for asset in composer.get("template_assets", []):
                 try:
-                    if self.path_is_child(self.project_output_dir, asset["path"]):
+                    asset_path = os.path.join(
+                        self.project_output_dir, asset["path"]
+                    )
+                    if self.path_is_child(self.project_output_dir, asset_path):
                         os.makedirs(
-                            os.path.dirname(asset["path"]), exist_ok=True)
-                        with open(asset["path"], "wb") as fh:
+                            os.path.dirname(asset_path), exist_ok=True)
+                        with open(asset_path, "wb") as fh:
                             fh.write(
                                 base64.b64decode(asset["base64"]))
                     else:
