@@ -409,8 +409,8 @@ class Json2Qgs():
         param list layertree: The whole QGS layer tree
         """
         # TODO: Where do we use this?
-        wms_service_name = metadata.get('service_name') or ''
-        wms_online_resource = metadata.get('online_resource') or ''
+        wfs_service_name = metadata.get('service_name') or ''
+        wfs_online_resource = metadata.get('online_resource') or ''
 
         layer_ids = []
 
@@ -426,6 +426,7 @@ class Json2Qgs():
                 'wms_fees': html.escape(metadata.get('fees') or ''),
                 'wms_access_constraints': html.escape(
                     metadata.get('access_constraints') or ''),
+                'wfs_url': html.escape(wfs_online_resource),
                 'layertree': layertree,
                 'wfs_layers': layer_ids,
                 'composers': [],
