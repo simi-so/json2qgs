@@ -82,24 +82,15 @@
           "description": "Layer name",
           "type": "string"
         },
-        "type": {
-          "description": "Layer type",
-          "type": "string",
-          "const": "layer"
-        },
         "title": {
           "description": "Layer title",
           "type": "string"
-        },
-        "datatype": {
-          "description": "Data type",
-          "type": "string",
-          "const": "vector"
         },
         "postgis_datasource": {
           "type": "object",
           "properties": {
             "dbconnection": {
+              "description": "PostGIS connection as in QGIS datasource. Example: service=sogis_services",
               "type": "string"
             },
             "schema": {
@@ -170,9 +161,7 @@
       },
       "required": [
         "name",
-        "type",
         "title",
-        "datatype",
         "postgis_datasource"
       ]
     },
