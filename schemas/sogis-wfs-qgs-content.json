@@ -26,29 +26,50 @@
       "type": "object",
       "properties": {
         "service_name": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "service_title": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "service_abstract": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "keywords": {
-          "type": "array",
+          "type": [
+            "array",
+            "null"
+          ],
           "items": {
             "type": "string"
           }
         },
         "online_resource": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "fees": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "access_constraints": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     }

@@ -363,8 +363,8 @@ class Json2Qgs():
         return dict bindings: Dict for jinja
         """
         # TODO: Where do we use this?
-        wms_service_name = metadata.get('service_name', '')
-        wms_online_resource = metadata.get('online_resource', '')
+        wms_service_name = metadata.get('service_name') or ''
+        wms_online_resource = metadata.get('online_resource') or ''
 
         wms_extent = metadata.get('bbox')
         if wms_extent:
@@ -372,30 +372,30 @@ class Json2Qgs():
 
         return {
                 'wms_service_title': html.escape(
-                    metadata.get('service_title', '')),
+                    metadata.get('service_title') or ''),
                 'wms_service_abstract': html.escape(
-                    metadata.get('service_abstract', '')),
+                    metadata.get('service_abstract') or ''),
                 'wms_keywords': metadata.get('keywords', None),
                 'wms_url': html.escape(wms_online_resource),
                 'wms_contact_person': html.escape(
-                    metadata.get('contact_person', '')),
+                    metadata.get('contact_person') or ''),
                 'wms_contact_organization': html.escape(
-                    metadata.get('contact_organization', '')
+                    metadata.get('contact_organization') or ''
                 ),
                 'wms_contact_position': html.escape(
-                    metadata.get('contact_position', '')),
+                    metadata.get('contact_position') or ''),
                 'wms_contact_phone': html.escape(
-                    metadata.get('contact_phone', '')),
+                    metadata.get('contact_phone') or ''),
                 'wms_contact_mail': html.escape(
-                    metadata.get('contact_mail', '')),
-                'wms_fees': html.escape(metadata.get('fees', '')),
+                    metadata.get('contact_mail') or ''),
+                'wms_fees': html.escape(metadata.get('fees') or ''),
                 'wms_access_constraints': html.escape(
-                    metadata.get('access_constraints', '')),
+                    metadata.get('access_constraints') or ''),
                 'wms_root_name': html.escape(
-                    metadata.get('root_name', '')),
+                    metadata.get('root_name') or ''),
                 'wms_root_title': html.escape(
-                    metadata.get('root_title', '')),
-                'wms_crs_list': metadata.get('crs_list', ['EPSG:2056']),
+                    metadata.get('root_title') or ''),
+                'wms_crs_list': metadata.get('crs_list') or ['EPSG:2056'],
                 'wms_extent': wms_extent,
                 'layertree': layertree,
                 'composers': composers,
@@ -409,8 +409,8 @@ class Json2Qgs():
         param list layertree: The whole QGS layer tree
         """
         # TODO: Where do we use this?
-        wms_service_name = metadata.get('service_name', '')
-        wms_online_resource = metadata.get('online_resource', '')
+        wms_service_name = metadata.get('service_name') or ''
+        wms_online_resource = metadata.get('online_resource') or ''
 
         layer_ids = []
 
@@ -419,13 +419,13 @@ class Json2Qgs():
 
         return {
                 'wms_service_title': html.escape(
-                    metadata.get('service_title', '')),
+                    metadata.get('service_title') or ''),
                 'wms_service_abstract': html.escape(
-                    metadata.get('service_abstract', '')),
+                    metadata.get('service_abstract') or ''),
                 'wms_keywords': metadata.get('keywords', None),
-                'wms_fees': html.escape(metadata.get('fees', '')),
+                'wms_fees': html.escape(metadata.get('fees') or ''),
                 'wms_access_constraints': html.escape(
-                    metadata.get('access_constraints', '')),
+                    metadata.get('access_constraints') or ''),
                 'layertree': layertree,
                 'wfs_layers': layer_ids,
                 'composers': [],

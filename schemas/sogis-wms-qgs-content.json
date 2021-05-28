@@ -36,130 +36,175 @@
           }
         ]
       }
-    }
-  },
-  "print_templates": {
-    "title": "Print Templates",
-    "type": "array",
-    "items": {
-      "title": "Print Composer template",
-      "type": "object",
-      "properties": {
-        "template_base64": {
-          "description": "Print Composer template in Base64 encoding",
-          "type": "string",
-          "contentEncoding": "base64"
-        },
-        "template_assets": {
-          "title": "Assets list used by the template",
-          "type": "array",
-          "items": {
-            "title": "QPT assets",
-            "type": "object",
-            "properties": {
-              "path": {
-                "description": "Asset path relative to QGIS project file",
-                "type": "string"
-              },
-              "base64": {
-                "description": "QPT asset in Base64 encoding",
-                "type": "string",
-                "contentEncoding": "base64"
-              }
-            },
-            "required": [
-              "path",
-              "base64"
-            ]
-          }
-        }
-      },
-      "required": [
-        "template_base64"
-      ]
-    }
-  },
-  "selection_color": {
-    "title": "Selection color as RGBA",
-    "type": "array",
-    "items": {
-      "type": "integer"
     },
-    "minItems": 4,
-    "maxItems": 4
-  },
-  "wms_metadata": {
-    "title": "Metadata for WMS GetCapabilities",
-    "type": "object",
-    "properties": {
-      "service_name": {
-        "type": "string"
-      },
-      "service_title": {
-        "type": "string"
-      },
-      "service_abstract": {
-        "type": "string"
-      },
-      "keywords": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "online_resource": {
-        "type": "string",
-        "format": "uri"
-      },
-      "contact_person": {
-        "type": "string"
-      },
-      "contact_organization": {
-        "type": "string"
-      },
-      "contact_position": {
-        "type": "string"
-      },
-      "contact_phone": {
-        "type": "string"
-      },
-      "contact_mail": {
-        "type": "string",
-        "format": "email"
-      },
-      "fees": {
-        "type": "string"
-      },
-      "access_constraints": {
-        "type": "string"
-      },
-      "root_name": {
-        "type": "string"
-      },
-      "root_title": {
-        "type": "string"
-      },
-      "crs_list": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "bbox": {
-        "title": "Bounding box",
+    "print_templates": {
+      "title": "Print Templates",
+      "type": "array",
+      "items": {
+        "title": "Print Composer template",
         "type": "object",
         "properties": {
-          "bounds": {
-            "description": "Extent as [minx, miny, maxx, maxy]",
+          "template_base64": {
+            "description": "Print Composer template in Base64 encoding",
+            "type": "string",
+            "contentEncoding": "base64"
+          },
+          "template_assets": {
+            "title": "Assets list used by the template",
             "type": "array",
             "items": {
-              "type": "number"
+              "title": "QPT assets",
+              "type": "object",
+              "properties": {
+                "path": {
+                  "description": "Asset path relative to QGIS project file",
+                  "type": "string"
+                },
+                "base64": {
+                  "description": "QPT asset in Base64 encoding",
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "required": [
+                "path",
+                "base64"
+              ]
+            }
+          }
+        },
+        "required": [
+          "template_base64"
+        ]
+      }
+    },
+    "selection_color": {
+      "title": "Selection color as RGBA",
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "wms_metadata": {
+      "title": "Metadata for WMS GetCapabilities",
+      "type": "object",
+      "properties": {
+        "service_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "service_title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "service_abstract": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "keywords": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "online_resource": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "contact_person": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contact_organization": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contact_position": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contact_phone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contact_mail": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "email"
+        },
+        "fees": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "access_constraints": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "root_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "root_title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "crs_list": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "bbox": {
+          "title": "Bounding box",
+          "type": "object",
+          "properties": {
+            "bounds": {
+              "description": "Extent as [minx, miny, maxx, maxy]",
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4
             },
-            "minItems": 4,
-            "maxItems": 4
-          },
-          "srid": {
-            "type": "integer"
+            "srid": {
+              "type": "integer"
+            }
           }
         }
       }
