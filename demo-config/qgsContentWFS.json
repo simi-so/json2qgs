@@ -7,7 +7,7 @@
       "title": "Gemeindegrenzen",
       "datatype": "vector",
       "postgis_datasource": {
-        "dbconnection": "postgresql:///?service=sogis_services",
+        "dbconnection": "service=sogis_services",
         "schema": "agi_hoheitsgrenzen_pub",
         "table": "hoheitsgrenzen_gemeindegrenze",
         "unique_key": "t_id",

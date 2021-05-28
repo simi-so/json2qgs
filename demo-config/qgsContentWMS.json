@@ -29,7 +29,7 @@
       "title": "Gemeindegrenzen",
       "datatype": "vector",
       "postgis_datasource": {
-        "dbconnection": "postgresql:///?service=sogis_services",
+        "dbconnection": "service=sogis_services",
         "schema": "agi_hoheitsgrenzen_pub",
         "table": "hoheitsgrenzen_gemeindegrenze",
         "unique_key": "t_id",
@@ -68,7 +68,7 @@
       "title": "Grundstuecke",
       "datatype": "vector",
       "postgis_datasource": {
-        "dbconnection": "postgresql:///?service=sogis_services",
+        "dbconnection": "service=sogis_services",
         "schema": "agi_mopublic_pub",
         "table": "mopublic_grundstueck",
         "unique_key": "t_id",
@@ -108,7 +108,7 @@
       "title": "Ablagerungs- / Betriebs- und Unfallstandorte",
       "datatype": "vector",
       "postgis_datasource": {
-        "dbconnection": "postgresql:///?service=sogis_services",
+        "dbconnection": "service=sogis_services",
         "schema": "afu_altlasten_pub",
         "table": "belastete_standorte",
         "unique_key": "t_id",
