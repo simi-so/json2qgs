@@ -344,14 +344,23 @@ Benutzung
 
 ### Kommandozeilenparameter
 
-| Bezeichnung   | Beschreibung | Optional | Standardwert | Beispiel |
-|---------------|--------------|----------|--------------|----------|
-| qgsContent    | Pfad zu "qgsContent.json" | Nein | - | `demo-config/qgsContentWMS.json` |
-| mode          | Der Modus beschreibt welche Art von Projekt generiert werden soll.<br> - `wms`: WMS-Projekt generieren <br> - `wfs`: WFS-Projekt generieren | Nein | - | `wms` |
-| destination   | Pfad, unter welchem das erzeugte QGS abgelegt wird | Nein | - | `./` |
-| qgisVersion   | Ziel QGIS version des generierten Projekt. <br> Optionen: <br> - `2`: QGIS 2 <br> - `3`: QGIS 3 | Nein | - | `3` |
-| qgsTemplateDir| Pfad zum Verzeichniss wo sich folgende template Dateien befinden müssen: <br> - `linestring.qml` <br> - `point.qml` <br> - `polygon.qml` <br> - `raster.qml` <br> - `service_2.qgs` <br> - `service_3.qgs` | Ja | `qgs/` | `--qgsTemplateDir qgs/` |
-| log_level     | Log level <br> - `info` <br> - `debug` | Ja | `info` | `--log_level debug` |
+```
+usage: json2qgs.py [-h] [--qgsTemplateDir [QGSTEMPLATEDIR]] [--log_level [{info,debug}]] qgsContent {wms,wfs} destination {2,3}
+
+positional arguments:
+  qgsContent            Path to qgsContent config file
+  {wms,wfs}             Availabel modes: wms, wfs
+  destination           Directory where the generated QGS and QML assets should be saved in
+  {2,3}                 Wether to use the QGIS 2 or QGIS 3 service template
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --qgsTemplateDir [QGSTEMPLATEDIR]
+                        Path to template directory
+  --log_level [{info,debug}]
+                        Specifies the log level
+
+```
 
 ### Skript
 
