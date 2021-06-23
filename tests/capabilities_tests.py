@@ -95,7 +95,8 @@ class CapabilitiesTest(unittest.TestCase):
             Logger("Json2Qgs", logging.INFO),
             "tests/",
             qgis_version,
-            template_path
+            template_path,
+            "somap"
         )
 
         if mode == 'print':
