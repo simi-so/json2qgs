@@ -240,12 +240,12 @@
     "keywords": [
       "somap"
     ],
-    "online_resource": "",
+    "online_resource": "https://geo.so.ch/ows/somap",
     "contact_person": "",
     "contact_organization": "",
     "contact_position": "",
     "contact_phone": "",
-    "contact_mail": "",
+    "contact_mail": null,
     "fees": "",
     "access_constraints": "",
     "root_name": "somap",

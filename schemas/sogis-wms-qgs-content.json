@@ -11,11 +11,16 @@
       "format": "uri",
       "default": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json"
     },
-    "wms_root_layer": {
-      "title": "WMS root layer name",
-      "type": "string"
+    "wms_top_layers": {
+      "title": "WMS top layers",
+      "type": "array",
+      "items": {
+        "title": "Layer name",
+        "type": "string"
+      }
     },
     "layers": {
+      "title": "WMS layers",
       "type": "array",
       "items": {
         "oneOf": [
@@ -195,8 +200,13 @@
       }
     }
   },
+  "required": [
+    "wms_top_layers",
+    "layers"
+  ],
   "definitions": {
     "productset": {
+      "title": "Productset",
       "type": "object",
       "properties": {
         "name": {
@@ -228,6 +238,7 @@
       ]
     },
     "vector_layer": {
+      "title": "Vector layer",
       "type": "object",
       "properties": {
         "name": {
@@ -292,10 +303,6 @@
             "srid"
           ]
         },
-        "filter": {
-          "title": "QGIS object filter",
-          "type": "string"
-        },
         "qml_base64": {
           "description": "Vector QML in Base64 encoding",
           "type": "string",
@@ -344,9 +351,6 @@
         },
         "bbox": {
           "$ref": "#/definitions/bbox"
-        },
-        "srid": {
-          "type": "integer"
         }
       },
       "required": [
@@ -358,6 +362,7 @@
       ]
     },
     "raster_layer": {
+      "title": "Raster layer",
       "type": "object",
       "properties": {
         "name": {
@@ -401,9 +406,6 @@
         },
         "bbox": {
           "$ref": "#/definitions/bbox"
-        },
-        "srid": {
-          "type": "integer"
         }
       },
       "required": [
@@ -415,6 +417,7 @@
       ]
     },
     "wms_layer": {
+      "title": "External WMS layer",
       "type": "object",
       "properties": {
         "name": {
@@ -467,9 +470,6 @@
         "bbox": {
           "description": "Overall extent of WMS, also used as default extent for layers",
           "$ref": "#/definitions/bbox"
-        },
-        "srid": {
-          "type": "integer"
         }
       },
       "required": [
@@ -481,6 +481,7 @@
       ]
     },
     "wmts_layer": {
+      "title": "External WMTS Layer",
       "type": "object",
       "properties": {
         "name": {
@@ -537,9 +538,6 @@
         },
         "bbox": {
           "$ref": "#/definitions/bbox"
-        },
-        "srid": {
-          "type": "integer"
         }
       },
       "required": [

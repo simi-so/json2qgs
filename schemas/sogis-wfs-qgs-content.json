@@ -12,6 +12,7 @@
       "default": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json"
     },
     "layers": {
+      "title": "WFS layers",
       "type": "array",
       "items": {
         "oneOf": [
@@ -78,8 +79,12 @@
       }
     }
   },
+  "required": [
+    "layers"
+  ],
   "definitions": {
     "vector_layer": {
+      "title": "Vector layer",
       "type": "object",
       "properties": {
         "name": {
@@ -134,10 +139,6 @@
             "srid"
           ]
         },
-        "filter": {
-          "title": "QGIS object filter",
-          "type": "string"
-        },
         "attributes": {
           "type": "array",
           "items": {
@@ -158,9 +159,6 @@
         },
         "bbox": {
           "$ref": "#/definitions/bbox"
-        },
-        "srid": {
-          "type": "integer"
         }
       },
       "required": [
