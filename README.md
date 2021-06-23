@@ -399,3 +399,14 @@ Erzeugen von QGIS-Projektdateien:
     python json2qgs.py demo-config/qgsContentWMS.json wms ./ 3
     python json2qgs.py demo-config/qgsContentPrint.json wms ./ 3
     python json2qgs.py demo-config/qgsContentWFS.json wfs ./ 3
+
+### Testumgebung
+
+Umgebungsvariabeln für die Testumgebung setzen:
+
+    export QGIS_SERVER_URL=http://localhost:8001/ows
+    export PATH_TO_QGIS_SERVER_DIRECTORY=tests/docker/volumes/qgs-resources/
+
+Tests laufen lassen:
+
+    python test.py
