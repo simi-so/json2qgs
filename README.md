@@ -119,7 +119,7 @@ Konfiguration
       "datatype": "raster",
       // Datenquelle
       "raster_datasource": {
-        "datasource": "/geodata/ch.so.agi.uebersichtsplanuebersichtsplan.vrt",
+        "datasource": "/vsicurl/https://data.sourcepole.com/srtm_1km_3857.tif",
         "srid": 2056
       },
       // Raster QML mit Base64 Encoding
