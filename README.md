@@ -342,6 +342,8 @@ Konfiguration
 Benutzung
 ---------
 
+Skript für Python 3.5 oder neuer
+
 ### Kommandozeilenparameter
 
 ```
@@ -349,17 +351,17 @@ usage: json2qgs.py [-h] [--qgsTemplateDir [QGSTEMPLATEDIR]] [--log_level [{info,
 
 positional arguments:
   qgsContent            Path to qgsContent config file
-  {wms,wfs}             Availabel modes: wms, wfs
+  {wms,wfs}             Available modes: wms, wfs
   destination           Directory where the generated QGS and QML assets should be saved in
   {2,3}                 Wether to use the QGIS 2 or QGIS 3 service template
 
 optional arguments:
   -h, --help            show this help message and exit
   --qgsTemplateDir [QGSTEMPLATEDIR]
-                        Path to template directory
+                        Path to template directory (default: 'qgs/')
+  --qgsName [QGSNAME]   Target base name of generated QGS files (default: 'somap')
   --log_level [{info,debug}]
-                        Specifies the log level
-
+                        Specifies the log level (default: info)
 ```
 
 ### Skript

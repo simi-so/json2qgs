@@ -56,7 +56,7 @@ class Json2Qgs():
     DEFAULT_EXTENT = [2590983, 1212806, 2646267, 1262755]
 
     def __init__(self, config, logger, dest_path, qgisVersion,
-                 qgsTemplateDir):
+                 qgsTemplateDir, qgs_name):
         """Constructor
 
         :param obj config: Json2Qgs config
@@ -65,6 +65,7 @@ class Json2Qgs():
         :param str qgisVersion: Define the version of the QGIS template to use
         :param str qgsTemplateDir: Path to the qgs template dir where the
                    default QMLs and QGIS template files should exist
+        :param str qgs_name: Target base name of generated QGS files
         """
         self.logger = logger
 
@@ -113,6 +114,8 @@ class Json2Qgs():
             "raster": self.load_template(
                 os.path.join(qgsTemplateDir, 'raster.qml'))
         }
+
+        self.qgs_name = qgs_name
 
         self.wms_top_layer = config.get("wms_top_layers", [])
 
@@ -537,11 +540,12 @@ class Json2Qgs():
         qgs = qgs_template.render(**binding)
 
         if len(self.config.get("print_templates", [])) > 0:
-            mode = "print"
+            suffix = "_print"
         else:
-            mode = "wms"
+            suffix = ""
 
-        qgs_path = os.path.join(self.project_output_dir, "somap_%s.qgs" % mode)
+        qgs_filename = "%s%s.qgs" % (self.qgs_name, suffix)
+        qgs_path = os.path.join(self.project_output_dir, qgs_filename)
 
         try:
             with open(qgs_path, 'w', encoding='utf-8') as f:
@@ -580,7 +584,8 @@ class Json2Qgs():
             "wfs_metadata", {}), layertree)
         qgs = qgs_template.render(**binding)
 
-        qgs_path = os.path.join(self.project_output_dir, "somap_wfs.qgs")
+        qgs_filename = "%s_wfs.qgs" % self.qgs_name
+        qgs_path = os.path.join(self.project_output_dir, qgs_filename)
 
         try:
             with open(qgs_path, 'w', encoding='utf-8') as f:
@@ -682,7 +687,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "mode", choices=['wms', 'wfs'],
-        help="Availabel modes: wms, wfs"
+        help="Available modes: wms, wfs"
     )
     parser.add_argument(
         "destination",
@@ -693,12 +698,18 @@ if __name__ == '__main__':
         help="Wether to use the QGIS 2 or QGIS 3 service template"
     )
     parser.add_argument(
-        '--qgsTemplateDir', help="Path to template directory",
+        '--qgsTemplateDir',
+        help="Path to template directory (default: 'qgs/')",
         default="qgs/", nargs='?'
     )
     parser.add_argument(
+        '--qgsName',
+        help="Target base name of generated QGS files (default: 'somap')",
+        default='somap', nargs='?'
+    )
+    parser.add_argument(
         "--log_level", choices=['info', 'debug'], default="info", nargs='?',
-        help="Specifies the log level"
+        help="Specifies the log level (default: info)"
     )
     args = parser.parse_args()
 
@@ -722,7 +733,7 @@ if __name__ == '__main__':
     # create Json2Qgs
     generator = Json2Qgs(
         config, logger, args.destination,
-        args.qgisVersion, args.qgsTemplateDir)
+        args.qgisVersion, args.qgsTemplateDir, args.qgsName)
     if not generator.can_generate:
         print(
             "Error: Generator stopped! Please check if all"
