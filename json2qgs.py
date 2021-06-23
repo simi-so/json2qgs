@@ -55,15 +55,15 @@ class Json2Qgs():
     # default extent for WMS and layers if not set in config
     DEFAULT_EXTENT = [2590983, 1212806, 2646267, 1262755]
 
-    def __init__(self, config, logger, dest_path, qgisVersion,
-                 qgsTemplateDir, qgs_name):
+    def __init__(self, config, logger, dest_path, qgis_version,
+                 qgs_template_dir, qgs_name):
         """Constructor
 
         :param obj config: Json2Qgs config
         :param Logger logger: Logger
         :param str dest_path: Path where the generated files should be saved
-        :param str qgisVersion: Define the version of the QGIS template to use
-        :param str qgsTemplateDir: Path to the qgs template dir where the
+        :param str qgis_version: Define the version of the QGIS template to use
+        :param str qgs_template_dir: Path to the qgs template dir where the
                    default QMLs and QGIS template files should exist
         :param str qgs_name: Target base name of generated QGS files
         """
@@ -73,6 +73,7 @@ class Json2Qgs():
         self.can_generate = True
 
         self.project_output_dir = os.path.abspath(dest_path)
+        qgs_template_dir = os.path.abspath(qgs_template_dir)
 
         # get config settings
 
@@ -90,12 +91,12 @@ class Json2Qgs():
             'selection_color_rgba', [255, 255, 0, 255]
         )
 
-        if qgisVersion == '3':
+        if qgis_version == '3':
             self.qgs_template_fn = os.path.join(
-                qgsTemplateDir, 'service_3.qgs')
+                qgs_template_dir, 'service_3.qgs')
         else:
             self.qgs_template_fn = os.path.join(
-                qgsTemplateDir, 'service_2.qgs')
+                qgs_template_dir, 'service_2.qgs')
 
         if not os.path.exists(self.qgs_template_fn):
             self.can_generate = False
@@ -106,13 +107,13 @@ class Json2Qgs():
         # load default styles
         self.default_styles = {
             "point": self.load_template(
-                os.path.join(qgsTemplateDir, 'point.qml')),
+                os.path.join(qgs_template_dir, 'point.qml')),
             "linestring": self.load_template(
-                os.path.join(qgsTemplateDir, 'linestring.qml')),
+                os.path.join(qgs_template_dir, 'linestring.qml')),
             "polygon": self.load_template(
-                os.path.join(qgsTemplateDir, 'polygon.qml')),
+                os.path.join(qgs_template_dir, 'polygon.qml')),
             "raster": self.load_template(
-                os.path.join(qgsTemplateDir, 'raster.qml'))
+                os.path.join(qgs_template_dir, 'raster.qml'))
         }
 
         self.qgs_name = qgs_name
@@ -126,10 +127,6 @@ class Json2Qgs():
         """
         template = None
         try:
-            # get absolute path to template
-            path = os.path.abspath(
-                os.path.join(os.path.dirname(__file__), path)
-            )
             with open(path) as f:
                 template = f.read()
         except Exception as e:
