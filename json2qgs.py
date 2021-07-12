@@ -194,10 +194,11 @@ class Json2Qgs():
         return os.path.commonpath([parent_path]) == os.path.commonpath(
             [parent_path, child_path])
 
-    def collect_layer(self, layer):
+    def collect_layer(self, layer, is_wms):
         """Collect layer info for layersubtree from qgsContent.
 
-        param dict layer: Data layer dictionary
+        :param dict layer: Data layer dictionary
+        :param bool is_wms: Whether mode is WMS or WFS
         """
 
         layer_keys = layer.keys()
@@ -241,8 +242,9 @@ class Json2Qgs():
                 qgs_layer["attributes"] = qml["attr"]
 
             except:
-                self.logger.warning(
-                    "Falling back to default style for %s" % layer["name"])
+                if is_wms:
+                    self.logger.warning(
+                        "Falling back to default style for %s" % layer["name"])
 
                 singletype = re.sub(
                     '^multi', "", datasource["geometry_type"].lower())
@@ -446,18 +448,19 @@ class Json2Qgs():
                 'selection_color': self.selection_color
             }
 
-    def collect_group_layer(self, group_layer, layers):
+    def collect_group_layer(self, group_layer, layers, is_wms):
         """Collect group layer info for layersubtree from qgsContent.
 
         param dict group_layer: group layer dictionary
         param list layers: Layer list, which is used to collect info
                            on sublayers.
+        :param bool is_wms: Whether mode is WMS or WFS
         """
         sublayers = []
 
         for layer in layers:
             if layer["name"] in group_layer["sublayers"]:
-                sublayers.append(self.collect_layer(layer))
+                sublayers.append(self.collect_layer(layer, is_wms))
 
         return {
             "type": group_layer["type"],
@@ -491,10 +494,10 @@ class Json2Qgs():
         for layer in layers:
             if layer["name"] in self.wms_top_layer:
                 if layer["type"] != 'productset':
-                    layertree.append(self.collect_layer(layer))
+                    layertree.append(self.collect_layer(layer, True))
                 else:
                     layertree.append(
-                        self.collect_group_layer(layer, layers))
+                        self.collect_group_layer(layer, layers, True))
 
         # Iterate through all assets used in the QPT and save them
         # in the filesystem
@@ -574,7 +577,7 @@ class Json2Qgs():
         layertree = []
 
         for layer in layers:
-            layertree.append(self.collect_layer(layer))
+            layertree.append(self.collect_layer(layer, False))
 
         qgs_template = Template(qgis_template)
         binding = self.collect_wfs_metadata(self.config.get(
