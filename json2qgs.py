@@ -539,12 +539,7 @@ class Json2Qgs():
             "wms_metadata", {}), layertree, composers=composers)
         qgs = qgs_template.render(**binding)
 
-        if len(self.config.get("print_templates", [])) > 0:
-            suffix = "_print"
-        else:
-            suffix = ""
-
-        qgs_filename = "%s%s.qgs" % (self.qgs_name, suffix)
+        qgs_filename = "%s.qgs" % self.qgs_name
         qgs_path = os.path.join(self.project_output_dir, qgs_filename)
 
         try:
@@ -584,7 +579,7 @@ class Json2Qgs():
             "wfs_metadata", {}), layertree)
         qgs = qgs_template.render(**binding)
 
-        qgs_filename = "%s_wfs.qgs" % self.qgs_name
+        qgs_filename = "%s.qgs" % self.qgs_name
         qgs_path = os.path.join(self.project_output_dir, qgs_filename)
 
         try:
@@ -704,7 +699,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         '--qgsName',
-        help="Target base name of generated QGS files (default: 'somap')",
+        help="Target name of generated QGS file (default: 'somap')",
         default='somap', nargs='?'
     )
     parser.add_argument(

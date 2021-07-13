@@ -36,19 +36,21 @@ class CapabilitiesTest(unittest.TestCase):
 
             if mode == "print":
                 config_path = "demo-config/qgsContentPrint.json"
+                qgs_name = 'somap_print'
             else:
                 config_path = "demo-config/qgsContentWFS.json"
+                qgs_name = 'somap_wfs'
 
             # Generate project and get the used json2qgs config
             config = self.generate_qgis_project(
-                config_path, mode, qgis_version, template_path)
+                config_path, mode, qgis_version, template_path, qgs_name)
             layers_from_config = []
 
             # Copy the generated project to qgis server
             qgis_project_path = os.path.join(
-                qgis_server_path, "somap_%s.qgs" % mode)
+                qgis_server_path, "%s.qgs" % qgs_name)
             shutil.move(os.path.join(
-                dest_path, "somap_%s.qgs" % mode), qgis_project_path)
+                dest_path, "%s.qgs" % qgs_name), qgis_project_path)
 
             # Get all layer names from json2qgs config
             for layer in config["layers"]:
@@ -56,7 +58,7 @@ class CapabilitiesTest(unittest.TestCase):
 
             # Get all layer names from capabilities of the generated project
             layers_from_capbilities = self.get_layer_list_from_capabilities(
-                qgis_server_url + "/somap_%s" % mode,
+                qgis_server_url + "/%s" % qgs_name,
                 "wms" if mode == "print" else "wfs")
 
             # Delete copied file
@@ -66,7 +68,7 @@ class CapabilitiesTest(unittest.TestCase):
             self.assertCountEqual(layers_from_capbilities, layers_from_config)
 
     def generate_qgis_project(self, config_path, mode,
-                              qgis_version, template_path):
+                              qgis_version, template_path, qgs_name):
         """Generate a qgis project with json2qgs
 
         Args:
@@ -76,6 +78,7 @@ class CapabilitiesTest(unittest.TestCase):
             template_path (str): Path to the qgs template dir where the
                                  default QMLs and QGIS template files
                                  should exist
+            qgs_name (str): Target name of generated QGS file
 
         Returns:
             dict: json2qgs config
@@ -96,7 +99,7 @@ class CapabilitiesTest(unittest.TestCase):
             "tests/",
             qgis_version,
             template_path,
-            "somap"
+            qgs_name
         )
 
         if mode == 'print':

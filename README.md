@@ -347,7 +347,7 @@ Skript für Python 3.5 oder neuer
 ### Kommandozeilenparameter
 
 ```
-usage: json2qgs.py [-h] [--qgsTemplateDir [QGSTEMPLATEDIR]] [--log_level [{info,debug}]] qgsContent {wms,wfs} destination {2,3}
+usage: json2qgs.py [-h] [--qgsTemplateDir [QGSTEMPLATEDIR]] [--qgsName [QGSNAME]] [--log_level [{info,debug}]] qgsContent {wms,wfs} destination {2,3}
 
 positional arguments:
   qgsContent            Path to qgsContent config file
@@ -359,10 +359,12 @@ optional arguments:
   -h, --help            show this help message and exit
   --qgsTemplateDir [QGSTEMPLATEDIR]
                         Path to template directory (default: 'qgs/')
-  --qgsName [QGSNAME]   Target base name of generated QGS files (default: 'somap')
+  --qgsName [QGSNAME]   Target name of generated QGS file (default: 'somap')
   --log_level [{info,debug}]
                         Specifies the log level (default: info)
 ```
+
+**Zu beachten:** Für WMS, Print und WFS müssen unterschiedliche `--qgsName` gewählt werden, damit diese nicht gegenseitig überschrieben werden (z.B. `somap`, `somap_print` und `somap_wfs`)
 
 ### Skript
 
@@ -372,11 +374,11 @@ Alle Befehle anzeigen:
 
 WMS-Projekt generieren (für WMS oder Print):
 
-    python json2qgs.py demo-config/qgsContentWMS.json wms ./ 3
+    python json2qgs.py demo-config/qgsContentWMS.json wms ./ 3 --qgsName somap
 
 WFS-Projekt generieren:
 
-    python json2qgs.py demo-config/qgsContentWFS.json wfs ./ 3
+    python json2qgs.py demo-config/qgsContentWFS.json wfs ./ 3 --qgsName somap_wfs
 
 
 Entwicklung
@@ -396,9 +398,9 @@ Anforderungen installieren:
 
 Erzeugen von QGIS-Projektdateien:
 
-    python json2qgs.py demo-config/qgsContentWMS.json wms ./ 3
-    python json2qgs.py demo-config/qgsContentPrint.json wms ./ 3
-    python json2qgs.py demo-config/qgsContentWFS.json wfs ./ 3
+    python json2qgs.py demo-config/qgsContentWMS.json wms ./ 3 --qgsName somap
+    python json2qgs.py demo-config/qgsContentPrint.json wms ./ 3 --qgsName somap_print
+    python json2qgs.py demo-config/qgsContentWFS.json wfs ./ 3 --qgsName somap_wfs
 
 ### Testumgebung
 
