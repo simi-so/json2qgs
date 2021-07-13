@@ -118,7 +118,7 @@ class Json2Qgs():
 
         self.qgs_name = qgs_name
 
-        self.wms_top_layer = config.get("wms_top_layers", [])
+        self.wms_top_layers = config.get("wms_top_layers", [])
 
     def load_template(self, path):
         """Load contents of QGIS template file.
@@ -194,8 +194,55 @@ class Json2Qgs():
         return os.path.commonpath([parent_path]) == os.path.commonpath(
             [parent_path, child_path])
 
-    def collect_layer(self, layer, is_wms):
-        """Collect layer info for layersubtree from qgsContent.
+    def collect_nested_layer(self, layer_name, layers_lookup, depth=0):
+        """Recursively collect layer infos for layersubtree from qgsContent.
+
+        NOTE: only used for WMS mode
+
+        :param str layer_name: Layer name
+        :param dict layers_lookup: Lookup for layer configs by name
+        :param int depth: Depth of recursion for log formatting
+        """
+        layer_info = None
+
+        layer = layers_lookup.get(layer_name)
+        if layer is None:
+            self.logger.warning(
+                "Could not find layer %s'%s'" % ("  " * depth, layer_name)
+            )
+            return layer_info
+
+        # NOTE: log output aligned to warning above
+        self.logger.debug(
+            "Adding layer:          %s'%s'" % ("  " * depth, layer["name"])
+        )
+
+        if layer.get("type") == 'productset':
+            # group layer
+
+            # collect sublayers
+            sublayers = []
+            for sublayer in layer["sublayers"]:
+                sublayer_info = self.collect_nested_layer(
+                    sublayer, layers_lookup, depth + 1
+                )
+                if sublayer_info:
+                    sublayers.append(sublayer_info)
+
+            layer_info = {
+                "type": layer["type"],
+                "name": layer["name"],
+                "title": layer["title"],
+                "items": sublayers
+            }
+        else:
+            # single layer
+            layer_info = self.collect_single_layer(layer, True)
+
+        return layer_info
+
+    def collect_single_layer(self, layer, is_wms):
+        """Collect single layer info for layersubtree from qgsContent.
 
         :param dict layer: Data layer dictionary
         :param bool is_wms: Whether mode is WMS or WFS
@@ -448,27 +495,6 @@ class Json2Qgs():
                 'selection_color': self.selection_color
             }
 
-    def collect_group_layer(self, group_layer, layers, is_wms):
-        """Collect group layer info for layersubtree from qgsContent.
-
-        param dict group_layer: group layer dictionary
-        param list layers: Layer list, which is used to collect info
-                           on sublayers.
-        :param bool is_wms: Whether mode is WMS or WFS
-        """
-        sublayers = []
-
-        for layer in layers:
-            if layer["name"] in group_layer["sublayers"]:
-                sublayers.append(self.collect_layer(layer, is_wms))
-
-        return {
-            "type": group_layer["type"],
-            "name": group_layer["name"],
-            "title": group_layer["title"],
-            "items": sublayers
-        }
-
     def generate_wms_project(self):
         """Generate project
 
@@ -486,18 +512,19 @@ class Json2Qgs():
             return
 
         qgis_template = self.load_template(self.qgs_template_fn)
-        layers = self.config.get("layers")
+
+        # collect lookup for layers by name
+        layers_lookup = {}
+        for layer in self.config.get("layers"):
+            layers_lookup[layer["name"]] = layer
 
         composers = []
         layertree = []
 
-        for layer in layers:
-            if layer["name"] in self.wms_top_layer:
-                if layer["type"] != 'productset':
-                    layertree.append(self.collect_layer(layer, True))
-                else:
-                    layertree.append(
-                        self.collect_group_layer(layer, layers, True))
+        for layer_name in self.wms_top_layers:
+            layer_info = self.collect_nested_layer(layer_name, layers_lookup)
+            if layer_info:
+                layertree.append(layer_info)
 
         # Iterate through all assets used in the QPT and save them
         # in the filesystem
@@ -572,7 +599,8 @@ class Json2Qgs():
         layertree = []
 
         for layer in layers:
-            layertree.append(self.collect_layer(layer, False))
+            self.logger.debug("Adding layer:'%s'" % layer["name"])
+            layertree.append(self.collect_single_layer(layer, False))
 
         qgs_template = Template(qgis_template)
         binding = self.collect_wfs_metadata(self.config.get(

@@ -2,13 +2,21 @@
   "$schema": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json",
   "wms_top_layers": [
     "ch.so.agi.agi_hoheitsgrenzen_pub.hoheitsgrenzen_gemeindegrenze",
-    "Grundstücke",
+    "av",
     "BelasteteStandorte",
     "ch.so.agi.uebersichtsplan",
     "1_hintergrundkarte_wms",
     "2_hintergrundkarte_wmts"
   ],
   "layers": [
+    {
+      "name": "av",
+      "type": "productset",
+      "title": "Amtliche Vermessung",
+      "sublayers": [
+        "Grundstücke"
+      ]
+    },
     {
       "name": "Grundstücke",
       "type": "productset",
