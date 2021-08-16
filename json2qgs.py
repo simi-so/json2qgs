@@ -308,8 +308,13 @@ class Json2Qgs():
                 # then create those directories and save the asset image
                 for asset in layer["qml_assets"]:
                     try:
+                        # save asset in additional subdir named after layer
+                        # i.e. <project_output_dir>/<layer name>/<asset path>
+                        rel_asset_path = os.path.join(
+                            layer["name"], asset["path"]
+                        )
                         asset_path = os.path.join(
-                            self.project_output_dir, asset["path"]
+                            self.project_output_dir, rel_asset_path
                         )
                         if self.path_is_child(self.project_output_dir, asset_path):
                             os.makedirs(
@@ -317,6 +322,13 @@ class Json2Qgs():
                             with open(asset_path, "wb") as fh:
                                 fh.write(
                                     base64.b64decode(asset["base64"]))
+
+                            # update relative symbol paths in QML
+                            pattern = "v=\"%s\"" % asset["path"]
+                            replacement = "v=\"%s\"" % rel_asset_path
+                            qgs_layer["style"] = qgs_layer["style"].replace(
+                                pattern, replacement
+                            )
                         else:
                             self.logger.warning(
                                 "[Layer: {}] An error occured when trying "
