@@ -208,7 +208,14 @@
       <value>{{ wms_extent[2] }}</value>
       <value>{{ wms_extent[3] }}</value>
     </WMSExtent>
-{% endif %}
+{%- endif %}
+{%- if wms_max_width %}
+    <WMSMaxWidth type="int">{{ wms_max_width }}</WMSMaxWidth>
+{%- endif %}
+{%- if wms_max_height %}
+    <WMSMaxHeight type="int">{{ wms_max_height }}</WMSMaxHeight>
+{%- endif %}
+
     <WMSFeatureInfoAliasLayers>
       <value>
         <text/>

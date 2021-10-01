@@ -471,6 +471,8 @@ class Json2Qgs():
                     metadata.get('root_title') or ''),
                 'wms_crs_list': metadata.get('crs_list') or ['EPSG:2056'],
                 'wms_extent': wms_extent,
+                'wms_max_width': self.config.get('wms_max_width'),
+                'wms_max_height': self.config.get('wms_max_height'),
                 'layertree': layertree,
                 'composers': composers,
                 'selection_color': self.selection_color

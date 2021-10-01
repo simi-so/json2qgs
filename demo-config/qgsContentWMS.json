@@ -170,7 +170,7 @@
       "title": "Übersichtsplan",
       "datatype": "raster",
       "raster_datasource": {
-        "datasource": "/vsicurl/https://data.sourcepole.com/srtm_1km_3857.tif",
+        "datasource": "/vsicurl/http://data.sourcepole.com/srtm_1km_3857.tif",
         "srid": 2056
       },
       "qml_base64": "ABCD123=",
@@ -191,6 +191,8 @@
     0,
     255
   ],
+  "wms_max_width": 8196,
+  "wms_max_height": 8196,
   "wms_metadata": {
     "service_name": "",
     "service_title": "",
