@@ -92,6 +92,20 @@
       "minItems": 4,
       "maxItems": 4
     },
+    "wms_max_width": {
+      "title": "Maximum width for WMS",
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "wms_max_height": {
+      "title": "Maximum height for WMS",
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
     "wms_metadata": {
       "title": "Metadata for WMS GetCapabilities",
       "type": "object",
@@ -316,7 +330,7 @@
             "type": "object",
             "properties": {
               "path": {
-                "description": "Asset path relative to QGIS project file",
+                "description": "Asset path as defined in QML from 'qml_base64'",
                 "type": "string"
               },
               "base64": {
