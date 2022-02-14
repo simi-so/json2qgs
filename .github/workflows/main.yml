@@ -8,6 +8,8 @@ jobs:
       runs-on: ubuntu-latest
       steps:
 
+      - uses: actions/checkout@master
+
       - name: Copy sogis-wms-qgs-content file
         run: |
           cp schemas/sogis-wms-qgs-content.json schemas/sogis-print-qgs-content.json
@@ -19,9 +21,9 @@ jobs:
           git commit -m "[github-action] copy file sogis-wms-qgs-content.json"
 
       - name: Push Changes
-        uses: sogis/json2qgs@master
+        uses: actions/github-push-action@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
     test:
       runs-on: ubuntu-latest
