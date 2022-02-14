@@ -16,8 +16,8 @@ jobs:
 
       - name: Commit changes
         run:
-          git config user.email agi.info@bd.so.ch
-          git config user.name agiuser
+          git config --local user.email "agi.info@bd.so.ch"
+          git config --local user.name "agiuser"
           git commit -m "[github-action] copy file sogis-wms-qgs-content.json"
 
       - name: Push Changes
