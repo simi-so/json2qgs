@@ -18,6 +18,7 @@ jobs:
         run: | 
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Action"
+          git add schemas/sogis-print-qgs-content.json
           git commit -m "[github-action] copy file sogis-wms-qgs-content.json" -a
 
       - name: Push Changes
