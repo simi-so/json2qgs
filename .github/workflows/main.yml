@@ -3,6 +3,26 @@ name: main
 on: [push, pull_request]
 
 jobs:
+
+    copySchemaFile:
+      runs-on: ubuntu:latest
+      steps:
+
+      - name: Copy sogis-wms-qgs-content file
+        run: |
+          cp schemas/sogis-wms-qgs-content.json schemas/sogis-print-qgs-content.json
+
+      - name: Commit changes
+        run:
+          git config user.email agi.info@bd.so.ch
+          git config user.name agiuser
+          git commit -m "[github-action] copy file sogis-wms-qgs-content.json"
+
+      - name: Push Changes
+        uses: sogis/json2qgs@master
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
     test:
       runs-on: ubuntu-latest
       steps:
@@ -30,21 +50,6 @@ jobs:
       runs-on: ubuntu-latest
       if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
       steps:
-
-      - name: Copy sogis-wms-qgs-content file
-        run: |
-          cp schemas/sogis-wms-qgs-content.json schemas/sogis-print-qgs-content.json
-
-      - name: Commit changes
-        run:
-          git config user.email agi.info@bd.so.ch
-          git config user.name agiuser
-          git commit -m "[github-action] copy file sogis-wms-qgs-content.json"
-
-      - name: Push Changes
-        uses: sogis/json2qgs@master
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the version from tag
         id: get_version
