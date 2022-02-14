@@ -1,8 +1,12 @@
 json2qgs
 ========
 
-Lastenheft: https://github.com/simi-so/simi/blob/master/mp/kp/k2/K2_QgsTrafoLastenheft.md#qgstrafo
+Kommandozeilentool, welches aus dem Inhalt des qgsContent.json und einem Template-QGS das *.qgs für die Dienste des QGIS-Server erzeugt.
 
+Die Inhalte des qgsContent.json werden dabei mittels [Jinja](https://jinja.palletsprojects.com/) in das Template-QGS eingesetzt.
+
+Im qgsContent.json ist der Inhalt der in [SIMI](https://github.com/sogis/dok/blob/dok/dok_funktionale_einheiten/Documents/simi/simi.md) verwalteten QGIS Ebenendarstellung (*.qml) base64-codiert enthalten (Ganzer XML-Inhalt der *.qml ist 1:1 base64 codiert).   
+Allfällige im *.qml referenzierte Assets (SVG, ...) sind ebenfalls base64-codiert im qgsContent.json enthalten.
 
 Konfiguration
 -------------
