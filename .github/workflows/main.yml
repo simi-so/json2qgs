@@ -93,4 +93,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/json2qgs:${{ needs.release.outputs.VERSION }}
+          tags: sogis/json2qgs:${{ needs.release.outputs.VERSION }}
