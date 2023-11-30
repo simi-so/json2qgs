@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-edit-qgs-content.json",
+  "$id": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json",
   "title": "SOGIS json2qgs data",
   "type": "object",
   "properties": {
@@ -9,7 +9,7 @@
       "description": "Reference to JSON schema of this document",
       "type": "string",
       "format": "uri",
-      "default": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-edit-qgs-content.json"
+      "default": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json"
     },
     "wms_top_layers": {
       "title": "WMS top layers",
@@ -215,6 +215,7 @@
     }
   },
   "required": [
+    "wms_top_layers",
     "layers"
   ],
   "definitions": {
