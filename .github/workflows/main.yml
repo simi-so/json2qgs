@@ -13,14 +13,13 @@ jobs:
       - name: Copy sogis-wms-qgs-content file
         run: |
           cp schemas/sogis-wms-qgs-content.json schemas/sogis-print-qgs-content.json
-          cp schemas/sogis-wms-qgs-content.json schemas/sogis-edit-qgs-content.json
 
       - name: Commit changes
         run: | 
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Action"
-          git add schemas/sogis-print-qgs-content.json schemas/sogis-edit-qgs-content.json
-          git commit -m "[github-action] copy file sogis-wms-qgs-content.json" -a --allow-empty
+          git add schemas/sogis-print-qgs-content.json
+          git commit -m "[github-action] copy file sogis-print-qgs-content.json" -a --allow-empty
 
       - name: Push Changes
         uses: ad-m/github-push-action@master
